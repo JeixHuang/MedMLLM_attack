@@ -1525,11 +1525,11 @@ def get_workers(params, eval=False):
     tokenizers = []
     #遍历配置文件中的所有tokenizer，即我们的模型，可以有多个模型一起
     #     config.model_paths = [
-    #         "/DIR/vicuna/vicuna-7b-v1.3",
+    #         "/DIR/vicuna/#vicuna-7b-v1.3",
     #         ... # more models
     #     ]
     #     config.tokenizer_paths = [
-    #         "/DIR/vicuna/vicuna-7b-v1.3"
+    #         "/DIR/vicuna/#vicuna-7b-v1.3"
     #     ]
     for i in range(len(params.tokenizer_paths)):
         #从预训练的模型词汇表中实例化库中的一个tokenizer类。
