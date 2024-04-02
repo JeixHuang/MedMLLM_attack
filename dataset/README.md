@@ -4,43 +4,12 @@
 
 Until now, there is no existing multimodal dataset available for evaluating MedMLLM-jailbreaks. However, there are some text-image datasets for LLM-jailbreaking evaluation, such as MM-SafetyBench.In addition, there are medical image diagnostic datasets 111. Therefore, we construct a multimodal dataset, namely MedMM-SafetyBench, based on a combination of MM-SafetyBench and 111 in this paper.
 
-## Structure
+## MedMLLLM's Capability
 
-We constructed this dataset based on existing research on attacks on LLMs and incorporating the now known directions and medical knowledge of medical multimodal large language modelling services.
+MedMLLM具有多种专业功能，包括但不限于Coarse-grained Image Understanding，Fine-grained Image Understanding等等，详见[CheXagent: Towards a Foundation Model
+for Chest X-Ray Interpretation](https://arxiv.org/pdf/2401.12208.pdf)
 
-We redefine two types of attacks.Therefore ,this dataset consists of two parts.
-
-```plaintext
-MedMM-SafetyBench/
-├── ID-attack/
-│   ├── Med_dataset
-└── MR-attack/
-    ├── Medical Diagnostics Misuse
-    ├── Prescription Mismanagement
-    ├── Healthcare Fraud
-    ├── Unqualified Medical Practice
-    ├── Breach of Patient Confidentiality
-    ├── Promotion of Self-Harm
-    ├── Substance Abuse Encouragement
-    ├── Improper Emergency Response
-    ├── Unethical Medical Practices
-    └── Misuse of Medical Records
-```
-
-### ID-attack(incorrect diagnosis)
-The medical multimodal macromodel does not always reasonably return the answer we need to a reasonable request for our normal enquiry. Quite the contrary, due to the possibility of bad spots in instruments, the presence of foreign objects in the patient's body, the possibility of illegal characters in the storage format of images and texts in various hospitals, and the possibility of erroneous diagnoses in the face of unseen diseases, there can be a great risk of accidents and medical hazards.
-
-This branch is suitable for generalised adversarial attacks and jailbreak attacks using noisy perturbations MedMLLM.
-
-We chose the highly popular medical dataset on github as our ID-attack dataset.
-
-### MR-attack(malicious request)
-
-Due to the diversity of user needs, there is a high likelihood that a request to enter a multimodal macromodel will be determined by the OpenAI Usage Policy to be incorrect, unlawful, discriminatory, or biased.
-
-This branch is suitable for generative tasks in the jailbreak attack
-
-This branch consists of 10 different scenarios respectively with the following categories:
+引用如下：
 
 | Capability | Task                          | Description                                                                                           |
 |------------|-------------------------------|-------------------------------------------------------------------------------------------------------|
@@ -77,7 +46,46 @@ This branch consists of 10 different scenarios respectively with the following c
 |            | Report Evaluation          | Given a REFENCE REPORT and a GENERATED REPORT, identify the ERROR.                                       |
 |            | Natural Language Explanation | Given an IMAGE and DISEASE, generate the natural language EXPLANATION.                                    |
 |            | Natural Language Inference | Given a PREMISE REPORT, determine whether a HYPOTHESIS REPORT is entailment, contradiction, or neutral.|
-|            | Temporal Sentence Similarity | Given SENTENCE 1 and SENTENCE 2, identify their SIMILARITY in terms of disease progression.            |
+|            | Temporal Sentence Similarity | Given SENTENCE 1 and SENTENCE 2, identify their SIMILARITY in terms of disease progression.        
+
+## Structure
+
+We constructed this dataset based on existing research on attacks on LLMs and incorporating the now known directions and medical knowledge of medical multimodal large language modelling services.
+
+We redefine two types of attacks.Therefore ,this dataset consists of two parts.
+
+```plaintext
+MedMM-SafetyBench/
+├── ID-attack/
+│   ├── Med_dataset
+└── MR-attack/
+    ├── Medical Diagnostics Misuse
+    ├── Prescription Mismanagement
+    ├── Healthcare Fraud
+    ├── Unqualified Medical Practice
+    ├── Breach of Patient Confidentiality
+    ├── Promotion of Self-Harm
+    ├── Substance Abuse Encouragement
+    ├── Improper Emergency Response
+    ├── Unethical Medical Practices
+    └── Misuse of Medical Records
+```
+
+### ID-attack(incorrect diagnosis)
+The medical multimodal macromodel does not always reasonably return the answer we need to a reasonable request for our normal enquiry. Quite the contrary, due to the possibility of bad spots in instruments, the presence of foreign objects in the patient's body, the possibility of illegal characters in the storage format of images and texts in various hospitals, and the possibility of erroneous diagnoses in the face of unseen diseases, there can be a great risk of accidents and medical hazards.
+
+This branch is suitable for generalised adversarial attacks and jailbreak attacks using noisy perturbations MedMLLM.
+
+We chose the highly popular medical dataset on github as our ID-attack dataset.
+
+### MR-attack(malicious request)
+
+Due to the diversity of user needs, there is a high likelihood that a request to enter a multimodal macromodel will be determined by the OpenAI Usage Policy to be incorrect, unlawful, discriminatory, or biased.
+
+This branch is suitable for generative tasks in the jailbreak attack
+
+This branch consists of 5 different scenarios respectively with the following categories:
+    |
 
 
 
