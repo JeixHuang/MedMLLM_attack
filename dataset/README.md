@@ -42,16 +42,44 @@ This branch is suitable for generative tasks in the jailbreak attack
 
 This branch consists of 10 different scenarios respectively with the following categories:
 
-- **Medical Diagnostics Misuse**
-- **Prescription Mismanagement**
-- **Healthcare Fraud**
-- **Unqualified Medical Practice**
-- **Breach of Patient Confidentiality**
-- **Promotion of Self-Harm**
-- **Substance Abuse Encouragement**
-- **Improper Emergency Response**
-- **Unethical Medical Practices**
-- **Misuse of Medical Records**
+| Capability | Task                          | Description                                                                                           |
+|------------|-------------------------------|-------------------------------------------------------------------------------------------------------|
+| Coarse-grained Image Understanding | Disease Classification       | Given an IMAGE, the model is required to diagnose if the DISEASE exists.                               |
+|            | Temporal image classification| Given the PRIOR IMAGE and CURRENT IMAGE, identify the progression LABEL.                                |
+|            | View Classification          | Given the IMAGE, identify its VIEW.                                                                     |
+|            | View Matching                | Given the IMAGE 1 and IMAGE 2, if they belong to the same study.                                        |
+| Fine-grained Image Understanding   | Abnormality Detection       | Given the IMAGE, localize the REGION of abnormalities.                                                  |
+|            | Abnormality Grounding       | Given the IMAGE, localize the REGION of abnormality.                                                     |
+|            | Pneumothorax Segmentation   | Given the IMAGE, segment the REGION of pneumothorax.                                                     |
+|            | Rib Fracture Segmentation   | Given the IMAGE, segment the REGION of rib fractures.                                                    |
+|            | Chest Tube Segmentation     | Given the IMAGE, segment the REGION of Chest Tubes.                                                      |
+|            | Foreign Object Detection    | Given the IMAGE, detect the REGION of external objects.                                                  |
+|            | Phrase Grounding           | Given the IMAGE and PHRASE, identify the REGION of PHRASE.                                                |
+|            | Grounded Captioning        | Given the IMAGE and REGION, generate a CAPTION.                                                          |
+|            | Grounded Diagnosis         | Given the IMAGE and REGION, generate a DIAGNOSIS.                                                        |
+|            | Grounded Phrase Extraction  | Given the IMAGE, its REPORT, and REGIONs, extract a PHRASE.                                              |
+|            | Phrase Extraction and Grounding | Given the IMAGE and its REPORT, extract a PHRASE and localize its REGION.                               |
+| Text Generation                   | Report Generation           | Given the IMAGE, generate its REPORT.                                                                   |
+|            | Findings Generation        | Given the IMAGE, generate its FINDINGS.                                                                 |
+|            | Impression Generation      | Given the IMAGE, generate its IMPRESSION.                                                               |
+|            | Progression Findings Generation | Given the REFERENCE IMAGE and MAIN IMAGE, generate its FINDINGS.                                         |
+|            | Progression Impression Generation | Given the REFERENCE IMAGE and MAIN IMAGE, generate its IMPRESSION.                                       |
+|            | Findings Summarization     | Given the FINDINGS, generate its IMPRESSION.                                                            |
+|            | Caption Generation         | Given the IMAGE, generate its CAPTION.                                                                  |
+|            | Local Findings Generation  | Given the IMAGE and a anatomy, generate its FINDINGS.                                                    |
+|            | Local Impression Generation| Given the IMAGE and a anatomy, generate its IMPRESSION.                                                   |
+| Question Answering                | Open-ended VQA             | Given the content of the given IMAGE, answer the QUESTION.                                              |
+|            | Close-ended VQA            | Given the content of the given IMAGE, choose one option from the OPTIONS to answer the QUESTION.       |
+|            | Difference VQA             | Given a REFERENCE IMAGE and a MAIN IMAGE, answer the QUESTION.                                           |
+|            | Text QA                    | Given PARAGRAPH, answer the QUESTION.                                                                  |
+| Miscellaneous                    | Image-Text Matching        | Given the IMAGE and REPORT, decide if they match.                                                       |
+|            | Image-Text Selection       | Given the IMAGE, select the text that best matches the image from OPTIONS.                               |
+|            | Report Evaluation          | Given a REFENCE REPORT and a GENERATED REPORT, identify the ERROR.                                       |
+|            | Natural Language Explanation | Given an IMAGE and DISEASE, generate the natural language EXPLANATION.                                    |
+|            | Natural Language Inference | Given a PREMISE REPORT, determine whether a HYPOTHESIS REPORT is entailment, contradiction, or neutral.|
+|            | Temporal Sentence Similarity | Given SENTENCE 1 and SENTENCE 2, identify their SIMILARITY in terms of disease progression.            |
+
+
 
 For each category, we obtained the corresponding 10 harmful requests using *GPT-4-Aided. For the key harmful information in each harmful request, we retrieved 30 semantically relevant images from the Internet using the Google search engine.
 
