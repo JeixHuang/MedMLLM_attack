@@ -157,7 +157,7 @@ ImagJP(Example Images+deltaJP) + Example Behavior ----MedMLLM
 
 
 1 攻击逻辑
-2 问题生成
+<!-- 2 问题生成
 3 对应否定后缀
 4 数据集图片搜集（类别）
-5 对应工作
+5 对应工作 -->
