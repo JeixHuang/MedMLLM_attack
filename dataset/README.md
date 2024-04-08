@@ -12,42 +12,27 @@ for Chest X-Ray Interpretation](https://arxiv.org/pdf/2401.12208.pdf)
 
 引用如下：
 
-| Capability | Task                          | Description                                                                                           |
-|------------|-------------------------------|-------------------------------------------------------------------------------------------------------|
-| Coarse-grained Image Understanding | Disease Classification       | Given an IMAGE, the model is required to diagnose if the DISEASE exists.                               |
-|            | Temporal image classification| Given the PRIOR IMAGE and CURRENT IMAGE, identify the progression LABEL.                                |
-|            | View Classification          | Given the IMAGE, identify its VIEW.                                                                     |
-|            | View Matching                | Given the IMAGE 1 and IMAGE 2, if they belong to the same study.                                        |
-| Fine-grained Image Understanding   | Abnormality Detection       | Given the IMAGE, localize the REGION of abnormalities.                                                  |
-|            | Abnormality Grounding       | Given the IMAGE, localize the REGION of abnormality.                                                     |
-|            | Pneumothorax Segmentation   | Given the IMAGE, segment the REGION of pneumothorax.                                                     |
-|            | Rib Fracture Segmentation   | Given the IMAGE, segment the REGION of rib fractures.                                                    |
-|            | Chest Tube Segmentation     | Given the IMAGE, segment the REGION of Chest Tubes.                                                      |
-|            | Foreign Object Detection    | Given the IMAGE, detect the REGION of external objects.                                                  |
-|            | Phrase Grounding           | Given the IMAGE and PHRASE, identify the REGION of PHRASE.                                                |
-|            | Grounded Captioning        | Given the IMAGE and REGION, generate a CAPTION.                                                          |
-|            | Grounded Diagnosis         | Given the IMAGE and REGION, generate a DIAGNOSIS.                                                        |
-|            | Grounded Phrase Extraction  | Given the IMAGE, its REPORT, and REGIONs, extract a PHRASE.                                              |
-|            | Phrase Extraction and Grounding | Given the IMAGE and its REPORT, extract a PHRASE and localize its REGION.                               |
-| Text Generation                   | Report Generation           | Given the IMAGE, generate its REPORT.                                                                   |
-|            | Findings Generation        | Given the IMAGE, generate its FINDINGS.                                                                 |
-|            | Impression Generation      | Given the IMAGE, generate its IMPRESSION.                                                               |
-|            | Progression Findings Generation | Given the REFERENCE IMAGE and MAIN IMAGE, generate its FINDINGS.                                         |
-|            | Progression Impression Generation | Given the REFERENCE IMAGE and MAIN IMAGE, generate its IMPRESSION.                                       |
-|            | Findings Summarization     | Given the FINDINGS, generate its IMPRESSION.                                                            |
-|            | Caption Generation         | Given the IMAGE, generate its CAPTION.                                                                  |
-|            | Local Findings Generation  | Given the IMAGE and a anatomy, generate its FINDINGS.                                                    |
-|            | Local Impression Generation| Given the IMAGE and a anatomy, generate its IMPRESSION.                                                   |
-| Question Answering                | Open-ended VQA             | Given the content of the given IMAGE, answer the QUESTION.                                              |
-|            | Close-ended VQA            | Given the content of the given IMAGE, choose one option from the OPTIONS to answer the QUESTION.       |
-|            | Difference VQA             | Given a REFERENCE IMAGE and a MAIN IMAGE, answer the QUESTION.                                           |
-|            | Text QA                    | Given PARAGRAPH, answer the QUESTION.                                                                  |
-| Miscellaneous                    | Image-Text Matching        | Given the IMAGE and REPORT, decide if they match.                                                       |
-|            | Image-Text Selection       | Given the IMAGE, select the text that best matches the image from OPTIONS.                               |
-|            | Report Evaluation          | Given a REFENCE REPORT and a GENERATED REPORT, identify the ERROR.                                       |
-|            | Natural Language Explanation | Given an IMAGE and DISEASE, generate the natural language EXPLANATION.                                    |
-|            | Natural Language Inference | Given a PREMISE REPORT, determine whether a HYPOTHESIS REPORT is entailment, contradiction, or neutral.|
-|            | Temporal Sentence Similarity | Given SENTENCE 1 and SENTENCE 2, identify their SIMILARITY in terms of disease progression.        
+| Major Category       | Subcategory            | Sub-Subcategory       | Description                                                                                       |
+|----------------------|------------------------|-----------------------|---------------------------------------------------------------------------------------------------|
+| **Image Understanding** | Coarse-grained         | Disease Classification | Diagnosing the presence or absence of disease. Identifies specific diseases from images.           |
+|                      |                        | View Classification    | Identifying the view or angle. Important for correct image interpretation.                        |
+|                      | Fine-grained           | Abnormality Detection  | Locates specific abnormalities within an image. Critical for accurate diagnosis.                  |
+|                      |                        | Object Detection       | Identifies foreign objects. Essential for patient safety and treatment planning.                  |
+| **Text Generation**     | Report Generation      | Impression Generation  | Summarizes the diagnostic impression. Key for conveying overall assessment.                       |
+|                      |                        | Findings Generation    | Details findings from image analysis. Provides evidence-based diagnosis.                         |
+|                      | Findings and Impressions | Anatomical Findings    | Related to specific anatomical parts. Enhances localized diagnostic accuracy.                    |
+|                      |                        | Impression Summary     | Brief summary for specific regions. Aids in focused assessment.                                   |
+| **Question Answering**  | Visual QA               | Open-ended             | Answers open questions based on images. Encourages comprehensive analysis.                        |
+|                      |                        | Close-ended            | Chooses correct answers from options. Tests specific understanding of image content.              |
+|                      | Text QA                | Fact-based             | Answers based on explicit text facts. Requires detailed text understanding.                      |
+|                      |                        | Inference-based        | Inferences from text to answer. Demands deeper comprehension and logic.                           |
+| **Miscellaneous**        | Image-Text Matching    | Matching               | Determines correct image-text pairs. Crucial for accurate information presentation.               |
+|                      |                        | Selection              | Chooses suitable text for an image. Ensures relevance and accuracy of information.               |
+|                      | Report Evaluation      | Error Identification   | Identifies inaccuracies in reports. Key for quality control and correction.                      |
+|                      |                        | Quality Assessment     | Assesses report accuracy and completeness. Important for diagnostic integrity.                   |
+|                      | Explanation and Inference | Explanation Generation | Generates explanations for diagnoses. Facilitates understanding and trust.                       |
+|                      |                        | Inference Making       | Determines logical report relationships. Supports clinical decision-making.                      |
+ 
 
 ## Structure
 
