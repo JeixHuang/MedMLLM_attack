@@ -1,4 +1,4 @@
-# Jailbreaking Attack against Medical Multimodal Large Language Model
+# Jailbreaking Attack on Medical MLLM: Establishing a Benchmark and Cross-Optimization Method
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
