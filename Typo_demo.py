@@ -78,6 +78,7 @@ def get_all_picture():
     data = pd.DataFrame(columns=csv_headers, data=img_paths)  # 将数据放进表格
     # #data.to_csv("myfile.csv", header=csv_headers, index=False, mode='a+', encoding='utf-8')
     data.to_csv('all_image_path.csv')
+    
 def getRandom():
     data = pd.read_csv("all_image_path.csv")
     paths = []
