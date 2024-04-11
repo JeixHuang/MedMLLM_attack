@@ -1,12 +1,18 @@
+import random
+
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
+import pandas as pd
+import os
+import csv
+
 
 def adjust_image_to_standard(source_image, standard_size=1024):
     """Resize or pad the image to fit the 1024x1024 standard size."""
     original_width, original_height = source_image.size
-    
+
     # Calculate the new size maintaining the aspect ratio
-    ratio = min(standard_size/original_width, standard_size/original_height)
+    ratio = min(standard_size / original_width, standard_size / original_height)
     new_size = int(original_width * ratio), int(original_height * ratio)
     resized_image = source_image.resize(new_size, Image.Resampling.LANCZOS)
 
@@ -15,8 +21,9 @@ def adjust_image_to_standard(source_image, standard_size=1024):
     # Calculate top-left corner coordinates to paste the resized image
     paste_coords = ((standard_size - new_size[0]) // 2, (standard_size - new_size[1]) // 2)
     new_image.paste(resized_image, paste_coords)
-    
+
     return new_image
+
 
 def create_text_block(text, font_path="arial.ttf", font_size=90, image_width=1024):
     """Create an image block of text, trying to bypass the 'textsize' issue."""
@@ -39,6 +46,7 @@ def create_text_block(text, font_path="arial.ttf", font_size=90, image_width=102
 
     return text_image
 
+
 def concatenate_images(source_image_path, text):
     """Concatenate the source image and the text block."""
     source_image = Image.open(source_image_path)
@@ -53,7 +61,32 @@ def concatenate_images(source_image_path, text):
     final_image_path = source_image_path.rsplit('.', 1)[0] + "_final.png"
     final_image.save(final_image_path)
 
+
+img_paths = []
+
+
+def get_all_picture():
+    file_paths = ["dataset/teeth"]
+    num = 0
+    for file_path in file_paths:
+        imgs = os.listdir(file_path)
+        for i in imgs:
+            img_paths.append([num, '{}/{}'.format(file_path, i)])
+            num += 1
+    print(img_paths)
+    csv_headers = ['序号', '路径']
+    data = pd.DataFrame(columns=csv_headers, data=img_paths)  # 将数据放进表格
+    # #data.to_csv("myfile.csv", header=csv_headers, index=False, mode='a+', encoding='utf-8')
+    data.to_csv('all_image_path.csv')
+def getRandom():
+    data = pd.read_csv("all_image_path.csv")
+    paths = []
+    for index, row in data.iterrows():
+        paths.append(row["路径"])
+    return paths[random.randint(1, len(paths)-1)]
+
 # Example usage
-source_image_path = "1.jpg"  # Adjust with your actual image path
-key_phrases = "pleural effusion"
+
+source_image_path = getRandom()  # Adjust with your actual image path
+key_phrases = source_image_path.split("/")[1]
 concatenate_images(source_image_path, key_phrases)
