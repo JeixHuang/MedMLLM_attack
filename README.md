@@ -86,7 +86,7 @@ Remember, this outline is crafted to emphasize the significant points provided w
 ## Medical Prompt Generation (MPG)
 
 ### 文件路径
-
+以下是项目路径
 ```plaintext
 MedicalPromptGeneration/
 │
