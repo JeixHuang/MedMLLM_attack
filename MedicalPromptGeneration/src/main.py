@@ -1,9 +1,10 @@
+# src/main.py
 import json
-from src.data_loader import DataLoader
-from src.model import MedicalPromptModel
+from data_loader import DataLoader
+from model import MedicalPromptModel
 
 def main():
-    with open('configs/model_config.json', 'r') as f:
+    with open('../configs/model_config.json') as f:
         config = json.load(f)
 
     data_loader = DataLoader(config)
