@@ -1,0 +1,8 @@
+{
+    "bert_path": "./models/bert/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext",
+    "ofa_path": "./models/ofa/ofa-base/",
+    "data_path": "./data/",
+    "output_path": "./outputs/",
+    "batch_size": 16,
+    "num_epochs": 10
+}
