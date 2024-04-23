@@ -86,7 +86,8 @@ Remember, this outline is crafted to emphasize the significant points provided w
 ## Medical Prompt Generation (MPG)
 
 ### 文件路径
-'''
+
+```plaintext
 MedicalPromptGeneration/
 │
 ├── src/                   # 源代码
@@ -119,4 +120,3 @@ MedicalPromptGeneration/
 │
 └── requirements.txt       # Python依赖包
 
-'''
