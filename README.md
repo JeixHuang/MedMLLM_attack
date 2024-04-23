@@ -120,3 +120,10 @@ MedicalPromptGeneration/
 │
 └── requirements.txt       # Python依赖包
 
+```
+
+### 使用
+
+```bash
+python src/main.py --config configs/model
+```
