@@ -1,3 +1,4 @@
+# 程序主入口，处理命令行参数，根据用户选择的模式执行训练或测试。
 from src.model import MedicalPromptModel
 from src.data_loader import DataLoader
 import argparse

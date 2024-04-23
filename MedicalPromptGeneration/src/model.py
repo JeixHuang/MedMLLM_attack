@@ -1,3 +1,7 @@
+'''
+MedicalPromptModel: 加载和训练BERT模型。
+train 和 evaluate 方法: 用于模型训练和评估。
+'''
 import torch
 from transformers import AutoModelForMaskedLM, AutoTokenizer
 

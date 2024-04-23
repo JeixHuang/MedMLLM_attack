@@ -126,4 +126,6 @@ MedicalPromptGeneration/
 
 ```bash
 python src/main.py --config configs/model
+python src/main.py --config configs/model_config.json --mode train
 ```
+
