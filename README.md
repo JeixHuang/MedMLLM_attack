@@ -81,3 +81,42 @@ Remember, this outline is crafted to emphasize the significant points provided w
 |                        |                            | Quality Assessment     | Assesses report accuracy and completeness. Important for diagnostic integrity.                                                                  |
 |                        | **Explanation and Inference** | Explanation Generation  | Generates explanations for diagnoses. Facilitates understanding and trust.                                                                      |
 |                        |                            | Inference Making       | Determines logical report relationships. Supports clinical decision-making.                                                                     |
+
+
+## Medical Prompt Generation (MPG)
+
+### 文件路径
+'''
+MedicalPromptGeneration/
+│
+├── src/                   # 源代码
+│   ├── __init__.py
+│   ├── main.py            # 主程序入口
+│   ├── model.py           # 模型定义
+│   ├── data_loader.py     # 数据加载
+│   ├── transformer_utils/ # 包含所有与transformers相关的操作
+│   │   ├── __init__.py
+│   │   ├── tokenizer.py
+│   │   └── model_utils.py
+│   └── utilities/         # 其他辅助功能
+│       ├── __init__.py
+│       └── utils.py
+│
+├── configs/               # 配置文件
+│   └── model_config.json
+│
+├── data/                  # 数据存放
+│   ├── images/            # 图像数据
+│   └── annotations/       # 标注数据
+│
+├── models/                # 预训练模型和权重
+│   ├── ofa/
+│   └── bert/
+│
+├── outputs/               # 输出和结果
+│   ├── logs/              # 日志文件
+│   └── predictions/       # 模型预测结果
+│
+└── requirements.txt       # Python依赖包
+
+'''
