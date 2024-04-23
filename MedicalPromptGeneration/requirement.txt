@@ -1,5 +1,5 @@
-torch
-transformers
 PIL
 tqdm
 numpy
+transformers
+torch>=1.8
