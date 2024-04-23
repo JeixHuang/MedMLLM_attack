@@ -1,12 +1,14 @@
 # src/model.py
 from transformer_utils.model_utils import load_model, load_processor
 
-class MedicalPromptModel:
+class VQAModel:
     def __init__(self, config, model_type):
-        if model_type == 'vilt':
-            self.processor = load_processor(model_type, config[f'{model_type}_path'])
-            self.model = load_model(model_type, config[f'{model_type}_path'])
-        else:
-            self.model = load_model(model_type, config[f'{model_type}_path'])
+        self.processor = load_processor(model_type, config[f'{model_type}_path'])
+        self.model = load_model(model_type, config[f'{model_type}_path'])
 
-    # 添加更多方法，如 train, test 等
+    def answer_question(self, image, question):
+        encoding = self.processor(image, question, return_tensors="pt")
+        outputs = self.model(**encoding)
+        logits = outputs.logits
+        idx = logits.argmax(-1).item()
+        return self.model.config.id2label[idx]

@@ -134,4 +134,7 @@ python src/main.py --model_type bert
 python src/main.py --model_type ofa
 python src/main.py --model_type vilt
 ```
+```bash
+python src/main.py --image_path "./data/images/sample.png" --model_type "vilt"
 
+```
