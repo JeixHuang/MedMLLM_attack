@@ -128,4 +128,10 @@ MedicalPromptGeneration/
 python src/main.py --config configs/model
 python src/main.py --config configs/model_config.json --mode train
 ```
+在部署代码前，通过不同的命令行参数测试所有模型，确保每种模型都能正确加载和执行
+```bash
+python src/main.py --model_type bert
+python src/main.py --model_type ofa
+python src/main.py --model_type vilt
+```
 

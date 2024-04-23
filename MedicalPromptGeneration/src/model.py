@@ -1,18 +1,12 @@
 # src/model.py
-import torch
-from transformer_utils.model_utils import load_model
+from transformer_utils.model_utils import load_model, load_processor
 
 class MedicalPromptModel:
-    def __init__(self, config):
-        self.model = load_model(config['bert_path'])
+    def __init__(self, config, model_type):
+        if model_type == 'vilt':
+            self.processor = load_processor(model_type, config[f'{model_type}_path'])
+            self.model = load_model(model_type, config[f'{model_type}_path'])
+        else:
+            self.model = load_model(model_type, config[f'{model_type}_path'])
 
-    def train(self, data_loader):
-        for images, annotations in data_loader:
-            outputs = self.model(images)
-            loss = self.calculate_loss(outputs, annotations)
-            loss.backward()
-            # Update model parameters here
-
-    def calculate_loss(self, outputs, annotations):
-        # Placeholder for loss calculation
-        return torch.tensor(0)
+    # 添加更多方法，如 train, test 等
