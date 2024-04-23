@@ -1,17 +1,27 @@
+import torch
+from transformers import AutoModelForMaskedLM, AutoTokenizer
+
 class MedicalPromptModel:
-    def __init__(self, config, data_loader):
+    def __init__(self, config):
         self.config = config
-        self.data_loader = data_loader
-        self.load_model()
+        self.tokenizer = AutoTokenizer.from_pretrained(config['bert_path'])
+        self.model = AutoModelForMaskedLM.from_pretrained(config['bert_path'])
+        self.model.to('cuda')
 
-    def load_model(self):
-        # 加载模型逻辑
-        pass
+    def train(self, dataloader):
+        self.model.train()
+        for epoch in range(self.config['num_epochs']):
+            for images in dataloader:
+                inputs = self.prepare_inputs(images)
+                outputs = self.model(**inputs)
+                loss = outputs.loss
+                loss.backward()
+                # Add optimization logic
 
-    def train(self):
-        # 训练逻辑
-        pass
+    def prepare_inputs(self, images):
+        # Implement input preparation logic
+        return {}
 
-    def evaluate(self):
-        # 评估逻辑
-        pass
+    def evaluate(self, dataloader):
+        self.model.eval()
+        # Evaluation logic
