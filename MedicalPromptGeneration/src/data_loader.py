@@ -1,30 +1,26 @@
-import os
-import json
-from torchvision import transforms
+from torch.utils.data import DataLoader, Dataset
 from PIL import Image
-from torch.utils.data import Dataset, DataLoader
+import os
 
-class MedicalImageDataset(Dataset):
-    def __init__(self, data_path, transform=None):
-        self.data_path = data_path
-        self.transform = transform
-        self.images = [os.path.join(data_path, f) for f in os.listdir(data_path) if f.endswith('.jpg')]
+class MedicalDataset(Dataset):
+    def __init__(self, image_dir, annotation_dir):
+        self.image_dir = image_dir
+        self.annotation_dir = annotation_dir
+        self.images = os.listdir(image_dir)
 
     def __len__(self):
         return len(self.images)
 
     def __getitem__(self, idx):
-        image_path = self.images[idx]
-        image = Image.open(image_path)
-        if self.transform:
-            image = self.transform(image)
-        return image
+        img_name = self.images[idx]
+        img_path = os.path.join(self.image_dir, img_name)
+        img = Image.open(img_path).convert('RGB')
+        # Assume annotations are in a separate file or format
+        annotation_path = os.path.join(self.annotation_dir, img_name.replace('.png', '.txt'))
+        with open(annotation_path, 'r') as file:
+            annotation = file.read()
+        return img, annotation
 
-def make_dataloader(config):
-    transform = transforms.Compose([
-        transforms.Resize((384, 384)),
-        transforms.ToTensor()
-    ])
-    dataset = MedicalImageDataset(config['data_path'], transform=transform)
-    dataloader = DataLoader(dataset, batch_size=config['batch_size'], shuffle=True)
-    return dataloader
+def DataLoader(config):
+    dataset = MedicalDataset(config['image_data_path'], config['annotation_data_path'])
+    return DataLoader(dataset, batch_size=config['batch_size'], shuffle=True)

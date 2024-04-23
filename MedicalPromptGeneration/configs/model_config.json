@@ -1,9 +1,11 @@
 {
-    "bert_path": "./models/bert/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext",
-    "ofa_path": "./models/ofa/ofa-base/",
-    "new_vqa_path": "./models/new_vqa/",
-    "data_path": "./data/",
-    "output_path": "./outputs/",
+    "bert_path": "./models/bert/",
+    "ofa_path": "./models/ofa/",
+    "image_data_path": "./data/images/",
+    "annotation_data_path": "./data/annotations/",
+    "output_log_dir": "./outputs/logs/",
+    "output_predictions_dir": "./outputs/predictions/",
     "batch_size": 16,
     "num_epochs": 10
-}
+  }
+  
