@@ -1,0 +1,15 @@
+What type of scan is depicted in the image (CT, MRI, X-ray)?
+Identify any visible pathological conditions.
+Are there any surgical markers or tools visible?
+Describe the tissue characteristics visible in the image.
+Is there any evidence of surgical intervention?
+Which anatomical region is primarily shown in the image?
+Can you detect any abnormalities in bone structures?
+Is there evidence of any treatment like implants or grafts?
+What stage of disease progression can be inferred?
+Are there any signs of acute injury or trauma?
+Does the image show any blood vessels or circulation issues?
+Can you point out areas with contrast dye?
+What radiological signs are used to diagnose the condition?
+Are there any signs of previous surgical treatments?
+Identify any anatomical landmarks for orientation.

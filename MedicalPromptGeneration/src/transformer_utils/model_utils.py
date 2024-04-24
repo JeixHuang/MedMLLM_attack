@@ -1,6 +1,6 @@
 # src/transformer_utils/model_utils.py
 from transformers import AutoModel, ViltProcessor, ViltForQuestionAnswering,AutoModel, BlipProcessor, BlipForQuestionAnswering,AutoModelForTokenClassification, AutoTokenizer, pipeline
-
+from transformers import BlipProcessor, BlipForQuestionAnswering
 def load_model(model_type, model_path):
     if model_type == 'bert' or model_type == 'ofa':
         return AutoModel.from_pretrained(model_path)
