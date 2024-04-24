@@ -1,0 +1,19 @@
+      Returns text to me in csv format in the following format ：id, question
+      1， id is from 0 to 19
+      2，第二列Question is normal，丛我给你的attributes中选取和医学图像有关的属性以及通用属性诸如颜色大小等
+
+      When you
+      output this content, the following
+      requirements should be met.
+
+      1. Each prompt includes multi-synaxes
+      sentences should not be repeated or
+      rephrased as another prompt.
+
+      2. These prompts include multi-synaxes
+      sentences should cover the scenario as
+      much as possible.
+
+      3. These prompts include multi-synaxes
+      sentences should be diverse.
+      Now generate these prompts including multisynaxes sentences.
