@@ -23,7 +23,7 @@ def main():
     for image_file in os.listdir(image_dir):
         if image_file.endswith('.png'):
             image_path = os.path.join(image_dir, image_file)
-            image = Image.open(image_path)
+            image = Image.open(image_path).convert('RGB')  # 加载图片并转换为RGB
 
             # Corresponding annotation file
             annotation_file = image_file.replace('.png', '.txt')
@@ -36,7 +36,7 @@ def main():
                 for question in questions:
                     question = question.strip()
                     if question:  # Ensure question is not empty
-                        answer = model.answer_question(image_path, question)
+                        answer = model.answer_question(image, question)  # 传递PIL.Image对象
                         print(f"Image: {image_file}, Question: {question}, Answer: {answer}")
             except FileNotFoundError:
                 print(f"Annotation file not found for {image_file}")
