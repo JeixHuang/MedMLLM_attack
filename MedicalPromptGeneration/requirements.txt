@@ -4,3 +4,5 @@ numpy
 transformers
 torch>=1.11.0
 requests
+bitsandbytes
+accelerate

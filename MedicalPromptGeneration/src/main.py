@@ -36,7 +36,7 @@ def main():
                 for question in questions:
                     question = question.strip()
                     if question:  # Ensure question is not empty
-                        answer = model.answer_question(image, question)
+                        answer = model.answer_question(image_path, question)
                         print(f"Image: {image_file}, Question: {question}, Answer: {answer}")
             except FileNotFoundError:
                 print(f"Annotation file not found for {image_file}")

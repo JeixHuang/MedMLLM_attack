@@ -3,6 +3,8 @@
   "bert_path": "./models/bert/",
   "ofa_path": "./models/ofa/",
   "blip_path": "Salesforce/blip-vqa-base",
+  "IMV_processor_path": "HuggingFaceM4/idefics-9b",
+  "IMV_model_path": "Shashwath01/Idefic_medical_VQA_merged_4bit",
   "medical_ner_path": "Clinical-AI-Apollo/Medical-NER",
   "image_data_path": "./data/images/",
   "annotation_data_path": "./data/annotations/",
