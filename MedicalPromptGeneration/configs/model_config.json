@@ -3,6 +3,7 @@
   "bert_path": "./models/bert/",
   "ofa_path": "./models/ofa/",
   "blip_path": "Salesforce/blip-vqa-base",
+  "medical_ner_path": "Clinical-AI-Apollo/Medical-NER",
   "image_data_path": "./data/images/",
   "annotation_data_path": "./data/annotations/",
   "output_predictions_dir": "./outputs/predictions/",
