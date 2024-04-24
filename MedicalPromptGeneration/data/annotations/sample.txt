@@ -1,1 +1,4 @@
-What are the colours of the objects in the picture, give me at least three please
+What are the colors in the picture
+What is in the picture
+Provide the position of the bones
+Is it a CT or MRI image

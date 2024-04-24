@@ -1,5 +1,8 @@
 {
   "vilt_path": "dandelin/vilt-b32-finetuned-vqa",
+  "bert_path": "./models/bert/",
+  "ofa_path": "./models/ofa/",
+  "blip_path": "Salesforce/blip-vqa-base",
   "image_data_path": "./data/images/",
   "annotation_data_path": "./data/annotations/",
   "output_predictions_dir": "./outputs/predictions/",
