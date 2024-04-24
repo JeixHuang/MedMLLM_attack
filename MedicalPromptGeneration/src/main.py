@@ -3,7 +3,10 @@ import json
 from model import VQAModel
 from PIL import Image
 import os
-import re
+import spacy
+
+# 加载spaCy的英文模型
+nlp = spacy.load("en_core_web_sm")
 
 def process_questions(model, image, questions):
     answers = []
@@ -14,9 +17,10 @@ def process_questions(model, image, questions):
             answers.append({"question": question, "answer": answer})
     return answers
 
-def extract_keywords(text):
-    # 这里使用了简单的正则表达式来匹配名词短语作为关键词，这个方法可以根据需要进行更复杂的改进
-    keywords = re.findall(r'\b\w+\b', text)
+def extract_nouns_and_adjectives(text):
+    # 使用spaCy提取名词和形容词
+    doc = nlp(text)
+    keywords = [token.text for token in doc if token.pos_ in ['NOUN', 'ADJ']]
     return keywords
 
 def main():
@@ -46,15 +50,18 @@ def main():
     imv_answers = process_questions(model_imv, image, questions)
 
     # Extract keywords and save
-    keywords = []
+    extracted_info = []
     for answer in blip_answers + imv_answers:
-        keywords.extend(extract_keywords(answer['answer']))
+        keywords = extract_nouns_and_adjectives(answer['answer'])
+        extracted_info.extend(keywords)
 
     output_path = os.path.join(os.path.dirname(__file__), '..', 'outputs', 'ret.txt')
     with open(output_path, 'w') as f:
-        f.write("\n".join(keywords))
+        f.write(f"Attributes for image '{os.path.basename(image_path)}':\n")
+        f.write("\n".join(set(extracted_info)))  # 使用 set 来去除重复的关键词
 
-    print("\n".join(keywords))
+    print(f"Attributes for image '{os.path.basename(image_path)}':")
+    print("\n".join(set(extracted_info)))
 
 if __name__ == "__main__":
     main()
