@@ -1,15 +1,10 @@
-What are the main colors in the image?
-Can you describe the size and shape of objects in the image?
-What is the orientation of the main object in the picture?
-Are there any repetitive patterns visible?
-How is the lighting condition in the image?
-Is the image sharp or blurry?
-What textures are present in the image?
-How many objects are in the foreground?
-What is the position of the main object relative to the background?
-Are there shadows visible in the image?
-What is the depth perception in the image?
-Are reflections present in the image?
-Are the objects arranged symmetrically?
-What is the scale of objects in relation to each other?
-Is the image taken from a high or low angle?
+Colour distribution
+Texture features
+Shape recognition
+Size and Proportion
+Contrast
+Brightness
+Edge Detection
+Viewing Angle and Orientation
+Depth of Field
+Dynamic Range
