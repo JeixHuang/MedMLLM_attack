@@ -1,0 +1,41 @@
+Attributes for image 'OIP.png':
+Question: Colour distribution
+Answer: black and white
+Question: Texture features
+Answer: splotches
+Question: Shape recognition
+Answer: round
+Question: Size and Proportion
+Answer: large
+Question: Contrast
+Answer: black and white
+Question: Brightness
+Answer: light
+Question: Edge Detection
+Answer: none
+Question: Viewing Angle and Orientation
+Answer: up
+Question: Depth of Field
+Answer: black and white
+Question: Dynamic Range
+Answer: no
+Question: Anatomical Structure Clarity
+Answer: Question: Anatomical Structure ClarityAnswer: Nucleus
+Question: Lesion size
+Answer: Question: Lesion sizeAnswer: 1.5 cm
+Question: Lesion location
+Answer: Question: Lesion locationAnswer: Liver
+Question: Contrast
+Answer: Question: ContrastAnswer: Contrast
+Question: Density or Intensity
+Answer: Question: Density or IntensityAnswer: Density
+Question: Texture Analysis
+Answer: Question: Texture AnalysisAnswer: The image shows a cell with a nucleus and a nucleolus.
+Question: Marginal features
+Answer: Question: Marginal featuresAnswer: Marginal features are the borders of the nucleus.
+Question: Enhancement features
+Answer: Question: Enhancement featuresAnswer: The enhancement features of this image are the
+Question: Segmentation and labelling
+Answer: Question: Segmentation and labellingAnswer: The nucleus of a cell is a dense area of chromatin, the genetic material of the cell.
+Question: Functional Imaging Indicators
+Answer: Question: Functional Imaging IndicatorsAnswer: The following are indicators of functional imaging:

@@ -1,0 +1,41 @@
+Attributes for image 'chest.png':
+Question: Colour distribution
+Answer: gray
+Question: Texture features
+Answer: x ray
+Question: Shape recognition
+Answer: x
+Question: Size and Proportion
+Answer: large
+Question: Contrast
+Answer: no
+Question: Brightness
+Answer: light
+Question: Edge Detection
+Answer: none
+Question: Viewing Angle and Orientation
+Answer: upper right
+Question: Depth of Field
+Answer: no
+Question: Dynamic Range
+Answer: none
+Question: Anatomical Structure Clarity
+Answer: Question: Anatomical Structure ClarityAnswer: Lung
+Question: Lesion size
+Answer: Question: Lesion sizeAnswer: 1.5 cm 2.5 cm 3.5 cm
+Question: Lesion location
+Answer: Question: Lesion locationAnswer: Left lung
+Question: Contrast
+Answer: Question: ContrastAnswer: Contrast-enhanced CT of the chest
+Question: Density or Intensity
+Answer: Question: Density or IntensityAnswer: Density
+Question: Texture Analysis
+Answer: Question: Texture AnalysisAnswer: A 60-year-old male with a history of
+Question: Marginal features
+Answer: Question: Marginal featuresAnswer: A 60-year-old man with a history of hypertension and hyperlipidemia presents with a 2-week history of dyspnea on exertion. He is a smoker and has a history of
+Question: Enhancement features
+Answer: Question: Enhancement featuresAnswer: The patient has a large left upper lobe mass.
+Question: Segmentation and labelling
+Answer: Question: Segmentation and labellingAnswer: A. Segmentation: The left lung is segmented into 4 lobes. The right lung is segmented into 3 lobes. The left upper lobe is segmented into 2 segments. The right upper lobe is segment
+Question: Functional Imaging Indicators
+Answer: Question: Functional Imaging IndicatorsAnswer: A 60-year-old man with a history of hypertension and hyperlipidemia presents with a 2-week history of progressive dyspnea and fatigue. He has no other symptoms. Physical
