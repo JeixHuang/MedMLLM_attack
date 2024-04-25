@@ -1,51 +1,46 @@
 import argparse
-import json
-from model import VQAModel
-from PIL import Image
 import os
-
-def process_questions(model, image, questions):
-    answers = []
-    for question in questions:
-        question = question.strip()
-        if question:
-            answer = model.answer_question(image, question)
-            answers.append({"question": question, "answer": answer})
-    return answers
+from PIL import Image
+from config_loader import load_config
+from model_handler import initialize_model
+from question_processor import process_questions
 
 def main():
     parser = argparse.ArgumentParser(description="Generate a list of attributes from images using different VQA models.")
     args = parser.parse_args()
 
-    config_path = os.path.join(os.path.dirname(__file__), '..', 'configs', 'model_config.json')
-    with open(config_path) as f:
-        config = json.load(f)
+    config = load_config('configs/model_config.json')
 
-    image_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'images', 'sample.png')
-    annotation_path1 = os.path.join(os.path.dirname(__file__), '..', 'data', 'annotations', 'sample1.txt')
-    annotation_path2 = os.path.join(os.path.dirname(__file__), '..', 'data', 'annotations', 'sample2.txt')
+    images_dir = os.path.join(os.path.dirname(__file__), '..', 'data', 'images')
+    outputs_dir = os.path.join(os.path.dirname(__file__), '..', 'outputs', 'ret')
 
-    image = Image.open(image_path).convert('RGB')
+    # Create the outputs directory if it does not exist
+    os.makedirs(outputs_dir, exist_ok=True)
 
-    # Process questions with BLIP model
-    model_blip = VQAModel(config, 'blip')
-    with open(annotation_path1, 'r') as file:
-        questions = file.readlines()
-    blip_answers = process_questions(model_blip, image, questions)
+    # Initialize models
+    model_blip = initialize_model(config, 'blip')
+    model_imv = initialize_model(config, 'IMV')
 
-    # Process questions with IMV model
-    model_imv = VQAModel(config, 'IMV')
-    with open(annotation_path2, 'r') as file:
-        questions = file.readlines()
-    imv_answers = process_questions(model_imv, image, questions)
+    # Process each image in the directory
+    for image_file in os.listdir(images_dir):
+        if image_file.lower().endswith(('.png', '.jpg', '.jpeg')):  # Check for image files
+            image_path = os.path.join(images_dir, image_file)
+            image = Image.open(image_path).convert('RGB')
 
-    # Save and print the results
-    output_path = os.path.join(os.path.dirname(__file__), '..', 'outputs', 'ret.txt')
-    with open(output_path, 'w') as f:
-        f.write(f"Attributes for image '{os.path.basename(image_path)}':\n")
-        for answer in blip_answers + imv_answers:
-            f.write(f"Question: {answer['question']}\nAnswer: {answer['answer']}\n")
-            print(f"Question: {answer['question']}\nAnswer: {answer['answer']}")
+            # Process questions with BLIP model using annotations from sample1.txt
+            blip_answers = process_questions(model_blip, image, os.path.join(os.path.dirname(__file__), '..', 'data', 'annotations', 'univesal_attributes.txt'))
+
+            # Process questions with IMV model using annotations from sample2.txt
+            imv_answers = process_questions(model_imv, image, os.path.join(os.path.dirname(__file__), '..', 'data', 'annotations', 'medical_attributes.txt'))
+
+            # Save the results in the outputs directory
+            output_filename = os.path.splitext(image_file)[0] + '.txt'
+            output_path = os.path.join(outputs_dir, output_filename)
+
+            with open(output_path, 'w') as f:
+                f.write(f"Attributes for image '{image_file}':\n")
+                for answer in blip_answers + imv_answers:
+                    f.write(f"Question: {answer['question']}\nAnswer: {answer['answer']}\n")
 
 if __name__ == "__main__":
     main()
