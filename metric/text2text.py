@@ -2,9 +2,8 @@ from FlagEmbedding import BGEM3FlagModel
 
 model = BGEM3FlagModel('BAAI/bge-m3',  use_fp16=True) 
 
-sentences_1 = ["What is BGE M3?", "Defination of BM25"]
-sentences_2 = ["BGE M3 is an embedding model supporting dense retrieval, lexical matching and multi-vector interaction.", 
-               "BM25 is a bag-of-words retrieval function that ranks a set of documents based on the query terms appearing in each document"]
+sentences_1 = ["What is BGE M3?"]
+sentences_2 = ["BM25 is a bag-of-words retrieval function that ranks a set of documents based on the query terms appearing in each document"]
 
 sentence_pairs = [[i,j] for i in sentences_1 for j in sentences_2]
 
@@ -19,3 +18,9 @@ print(model.compute_score(sentence_pairs,
 #   'sparse+dense': [0.482503205537796, 0.23454029858112335, 0.2332356721162796, 0.5122477412223816], 
 #   'colbert+sparse+dense': [0.6013619303703308, 0.3255828022956848, 0.32089319825172424, 0.6232916116714478]
 # }
+
+# colbert：使用多向量交互匹配得到的分数。
+# sparse：使用稀疏匹配得到的分数。
+# dense：使用密集匹配得到的分数。
+# sparse+dense：密集匹配和稀疏匹配分数的简单加和。
+# colbert+sparse+dense：所有三种匹配模式的加权和，根据 weights_for_different_modes 指定的权重进行计算。
