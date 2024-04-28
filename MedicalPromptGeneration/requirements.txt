@@ -1,13 +1,16 @@
 Pillow
 tqdm
-numpy
-transformers
+numpy>=1.18.5
+pandas>=1.1.5
+transformers>=4.33.0
 torch>=1.11.0
 requests
 bitsandbytes
 accelerate
 spacy
 huggingface-cli
-git+https://github.com/huggingface/transformers.git@2ef774211733f0acf8d3415f9284c49ef219e991
+# git+https://github.com/huggingface/transformers.git@2ef774211733f0acf8d3415f9284c49ef219e991
+# git+https://github.com/FlagOpen/FlagEmbedding.git
 pytesseract
+FlagEmbedding
 sentencepiece

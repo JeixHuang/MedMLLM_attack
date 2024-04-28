@@ -1,35 +1,21 @@
-from transformers import AutoTokenizer, AutoModel
-import torch
-import torch.nn.functional as F
+from FlagEmbedding import BGEM3FlagModel
 
-# Mean Pooling - Take attention mask into account for correct averaging
-def mean_pooling(model_output, attention_mask):
-    token_embeddings = model_output[0]  # First element of model_output contains all token embeddings
-    input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
-    return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
+model = BGEM3FlagModel('BAAI/bge-m3',  use_fp16=True) 
 
-# Sentences we want sentence embeddings for
-sentences = ['This is an example sentence', 'Each sentence is converted']
+sentences_1 = ["What is BGE M3?", "Defination of BM25"]
+sentences_2 = ["BGE M3 is an embedding model supporting dense retrieval, lexical matching and multi-vector interaction.", 
+               "BM25 is a bag-of-words retrieval function that ranks a set of documents based on the query terms appearing in each document"]
 
-# Load model from HuggingFace Hub
-tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
-model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
+sentence_pairs = [[i,j] for i in sentences_1 for j in sentences_2]
 
-# Tokenize sentences
-encoded_input = tokenizer(sentences, padding=True, truncation=True, return_tensors='pt')
+print(model.compute_score(sentence_pairs, 
+                          max_passage_length=128, # a smaller max length leads to a lower latency
+                          weights_for_different_modes=[0.4, 0.2, 0.4])) # weights_for_different_modes(w) is used to do weighted sum: w[0]*dense_score + w[1]*sparse_score + w[2]*colbert_score
 
-# Compute token embeddings
-with torch.no_grad():
-    model_output = model(**encoded_input)
-
-# Perform pooling
-sentence_embeddings = mean_pooling(model_output, encoded_input['attention_mask'])
-
-# Normalize embeddings
-sentence_embeddings = F.normalize(sentence_embeddings, p=2, dim=1)
-
-# Calculate cosine similarity
-cosine_similarity = torch.mm(sentence_embeddings, sentence_embeddings.t())
-
-print("Cosine Similarity Matrix:")
-print(cosine_similarity)
+# {
+#   'colbert': [0.7796499729156494, 0.4621465802192688, 0.4523794651031494, 0.7898575067520142], 
+#   'sparse': [0.195556640625, 0.00879669189453125, 0.0, 0.1802978515625], 
+#   'dense': [0.6259765625, 0.347412109375, 0.349853515625, 0.67822265625], 
+#   'sparse+dense': [0.482503205537796, 0.23454029858112335, 0.2332356721162796, 0.5122477412223816], 
+#   'colbert+sparse+dense': [0.6013619303703308, 0.3255828022956848, 0.32089319825172424, 0.6232916116714478]
+# }
