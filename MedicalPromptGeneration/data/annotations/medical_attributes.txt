@@ -1,10 +1,1 @@
-Anatomical Structure Clarity
-Lesion size
-Lesion location
-Contrast
-Density or Intensity
-Texture Analysis
-Marginal features
-Enhancement features
-Segmentation and labelling
-Functional Imaging Indicators
+"Could you provide insights on details about the clarity of anatomical structures, lesion size and location, density or intensity, texture analysis, marginal features, enhancement features, segmentation and labeling, and any functional imaging indicators present?"

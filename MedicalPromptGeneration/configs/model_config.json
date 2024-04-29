@@ -8,7 +8,6 @@
   "medical_ner_path": "Clinical-AI-Apollo/Medical-NER",
   "image_data_path": "./data/images/",
   "annotation_data_path": "./data/annotations/",
-  "output_predictions_dir": "./outputs/predictions/",
   "batch_size": 16,
   "num_epochs": 10
 }
