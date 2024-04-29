@@ -18,7 +18,7 @@ model.to(device)
 model.eval()
 
 def get_clip_score(image_path, text):
-    max_length = 2048  # Adjusted based on your model's configuration
+    max_length = 77  # Adjusted based on your model's configuration
     image = Image.open(image_path)
     inputs = processor(text=text[:max_length], images=image, return_tensors="pt", padding=True)
     inputs = {k: v.to(device) for k, v in inputs.items()}  # Ensure all inputs are on the same device as the model
