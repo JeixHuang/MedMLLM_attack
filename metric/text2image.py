@@ -29,8 +29,13 @@ model.to(device)
 model.eval()
 
 def preprocess_and_classify():
-    images = [Image.open(img) for img in test_imgs]
-    inputs = processor(images, return_tensors="pt", padding=True).to(device)
+    # Assuming that each image should be evaluated against each label
+    # Create a list of text prompts for each label and each image
+    texts = [template + label for label in labels for _ in test_imgs]  # Repeat text for each image
+    images = [Image.open(img) for img in test_imgs for _ in labels]  # Repeat each image for each label
+
+    # Process images and texts together
+    inputs = processor(text=texts, images=images, return_tensors="pt", padding=True).to(device)
 
     with torch.no_grad():
         outputs = model(**inputs)
@@ -47,18 +52,47 @@ def display_results(probs, sorted_indices):
             print(f"{labels[idx]}: {probs[i, idx] * 100:.2f}%")
         print('\n')
 
-def plot_images_with_metadata(probs, sorted_indices):
-    num_images = len(test_imgs)
-    fig, axes = plt.subplots(nrows=num_images, ncols=1, figsize=(10, 10 * num_images))
-    for i, img_path in enumerate(test_imgs):
-        img = Image.open(img_path)
-        ax = axes.flatten()[i]
-        ax.imshow(img)
-        ax.axis('off')
-        top_labels = [f"{labels[idx]}: {probs[i, idx] * 100:.2f}%" for idx in sorted_indices[i, :3]]
-        ax.set_title(f"{os.path.basename(img_path)}\n{' '.join(top_labels)}", fontsize=12)
-    plt.tight_layout()
-    plt.show()
+# def plot_images_with_metadata(probs, sorted_indices):
+#     num_images = len(test_imgs)
+#     num_labels_per_image = len(labels)
+#     output_dir = 'output_images'
+#     os.makedirs(output_dir, exist_ok=True)  # Create output directory if it doesn't exist
+
+#     fig, axes = plt.subplots(nrows=num_images, ncols=1, figsize=(10, 10 * num_images))
+#     for i, img_path in enumerate(test_imgs):
+#         img = Image.open(img_path)
+#         ax = axes if num_images == 1 else axes[i]
+#         ax.imshow(img)
+#         ax.axis('off')
+
+#         valid_indices = [idx for idx in sorted_indices[i, :3] if idx < num_labels_per_image]
+#         top_labels = [f"{labels[idx]}: {probs[i, idx] * 100:.2f}%" for idx in valid_indices]
+#         title = f"{os.path.basename(img_path)}\n{' '.join(top_labels)}"
+#         ax.set_title(title, fontsize=12)
+        
+#         # Print results to console
+#         print(title)
+
+    # plt.tight_layout()
+    # # Save the complete figure
+    # # figure_path = os.path.join(output_dir, 'classified_images.png')
+    # plt.savefig(figure_path)
+    # print(f"Saved the figure to {figure_path}")
+    # plt.close(fig)  # Close the figure to free memory
+
+    # Optionally, save individual images
+    # for i, img_path in enumerate(test_imgs):
+    #     img = Image.open(img_path)
+    #     fig, ax = plt.subplots()
+    #     ax.imshow(img)
+    #     ax.axis('off')
+    #     valid_indices = [idx for idx in sorted_indices[i, :3] if idx < num_labels_per_image]
+    #     top_labels = [f"{labels[idx]}: {probs[i, idx] * 100:.2f}%" for idx in valid_indices]
+    #     ax.set_title(f"{os.path.basename(img_path)}\n{' '.join(top_labels)}", fontsize=12)
+    #     individual_path = os.path.join(output_dir, f"{os.path.splitext(os.path.basename(img_path))[0]}_classified.png")
+    #     plt.savefig(individual_path)
+    #     plt.close(fig)  # Close the individual figure
+    #     print(f"Saved individual image to {individual_path}")
 
 def main():
     parser = argparse.ArgumentParser(description='Image classification tasks')
@@ -69,8 +103,7 @@ def main():
 
     if args.task == 'classify':
         display_results(probs, sorted_indices)
-    elif args.task == 'visualize':
-        plot_images_with_metadata(probs, sorted_indices)
+
 
 if __name__ == '__main__':
     main()
