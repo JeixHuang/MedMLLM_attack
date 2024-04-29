@@ -1,1 +1,10 @@
-"Could you provide insights on the color distribution, texture features, shape recognition, size and proportion, contrast levels, brightness, edge detection capabilities, viewing angle and orientation, depth of field, and dynamic range of this image?
+"Could you provide insights on the color distribution of this image?"
+"What are the texture features of this image?"
+"Can you describe the shape recognition in this image?"
+"What are the size and proportion details of this image?"
+"How are the contrast levels in this image?"
+"What is the brightness of this image?"
+"Can you discuss the edge detection capabilities of this image?"
+"What is the viewing angle and orientation of this image?"
+"Can you explain the depth of field in this image?"
+"What is the dynamic range of this image?"
