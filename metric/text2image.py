@@ -18,8 +18,10 @@ model.to(device)
 model.eval()
 
 def get_clip_score(image_path, text):
+    max_length = 2048  # Adjusted based on your model's configuration
     image = Image.open(image_path)
-    inputs = processor(text=text, images=image, return_tensors="pt", padding=True)
+    inputs = processor(text=text[:max_length], images=image, return_tensors="pt", padding=True)
+    inputs = {k: v.to(device) for k, v in inputs.items()}  # Ensure all inputs are on the same device as the model
     outputs = model(**inputs)
     logits_per_image = outputs.logits_per_image
     return logits_per_image.item()
@@ -27,27 +29,36 @@ def get_clip_score(image_path, text):
 def main():
     parser = argparse.ArgumentParser(description='Compare images with textual descriptions using CLIP.')
     parser.add_argument('--image_folder', type=str, default='./images', help='Folder containing images')
-    parser.add_argument('--text_folder', type=str, default='./text', help='Folder containing text descriptions')
+    parser.add_argument('--normal_text_folder', type=str, default='./output_normal', help='Folder containing normal text descriptions')
+    parser.add_argument('--harmful_text_folder', type=str, default='./output_harmful', help='Folder containing harmful text descriptions')
     args = parser.parse_args()
 
     image_directory = args.image_folder
-    text_directory = args.text_folder
+    normal_text_directory = args.normal_text_folder
+    harmful_text_directory = args.harmful_text_folder
 
+    # Load all images
     test_imgs = [os.path.join(image_directory, f) for f in os.listdir(image_directory) if f.endswith(('.png', '.jpg', '.jpeg'))]
-    test_texts = [os.path.join(text_directory, f) for f in os.listdir(text_directory) if f.endswith('.txt')]
+    
+    for img_file in test_imgs:
+        base_name = os.path.splitext(os.path.basename(img_file))[0]
+        normal_text_path = os.path.join(normal_text_directory, base_name + '.txt')
+        harmful_text_path = os.path.join(harmful_text_directory, base_name + '.txt')
 
-    img_to_text = {os.path.splitext(os.path.basename(img))[0]: os.path.join(text_directory, os.path.splitext(os.path.basename(img))[0] + '.txt') for img in test_imgs}
+        if os.path.exists(img_file) and os.path.exists(normal_text_path) and os.path.exists(harmful_text_path):
+            with open(normal_text_path, 'r') as file:
+                normal_text = file.read()
+            with open(harmful_text_path, 'r') as file:
+                harmful_text = file.read()
 
-    for img_name, text_path in img_to_text.items():
-        img_path = os.path.join(image_directory, img_name)
-        if os.path.exists(img_path) and os.path.exists(text_path):
-            with open(text_path, 'r') as file:
-                text = file.read()
-            score = get_clip_score(img_path, text)
-            print(f"Image: {img_path}, Text: {text_path}, Similarity Score: {score}")
+            normal_score = get_clip_score(img_file, normal_text)
+            harmful_score = get_clip_score(img_file, harmful_text)
+
+            print(f"Image: {img_file}")
+            print(f"Normal Text: {normal_text_path}, Similarity Score: {normal_score}")
+            print(f"Harmful Text: {harmful_text_path}, Similarity Score: {harmful_score}")
         else:
-            print(f"Missing file for {img_name}: Image path {img_path} or text path {text_path} does not exist.")
-
+            print(f"Missing files for {base_name}: Check paths for image and text files.")
 
 if __name__ == '__main__':
     main()
