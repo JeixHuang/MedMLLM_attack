@@ -1,15 +1,47 @@
 from FlagEmbedding import BGEM3FlagModel
+import argparse
+import os
 
-model = BGEM3FlagModel('BAAI/bge-m3',  use_fp16=True) 
+# 初始化模型
+model = BGEM3FlagModel('BAAI/bge-m3', use_fp16=True)
 
-sentences_1 = ["What is BGE M3?"]
-sentences_2 = ["BM25 is a bag-of-words retrieval function that ranks a set of documents based on the query terms appearing in each document"]
+# 设置命令行参数
+parser = argparse.ArgumentParser(description='Compare text files for similarity.')
+parser.add_argument('--normal_text_folder', type=str, default='./output_normal', help='Folder containing normal text descriptions')
+parser.add_argument('--harmful_text_folder', type=str, default='./output_harmful', help='Folder containing harmful text descriptions')
+args = parser.parse_args()
 
-sentence_pairs = [[i,j] for i in sentences_1 for j in sentences_2]
+# 获取文件夹路径
+normal_text_directory = args.normal_text_folder
+harmful_text_directory = args.harmful_text_folder
 
-print(model.compute_score(sentence_pairs, 
-                          max_passage_length=128, # a smaller max length leads to a lower latency
-                          weights_for_different_modes=[0.4, 0.2, 0.4])) # weights_for_different_modes(w) is used to do weighted sum: w[0]*dense_score + w[1]*sparse_score + w[2]*colbert_score
+# 读取文件名和内容
+def read_texts_from_folder(folder):
+    texts = {}
+    for filename in os.listdir(folder):
+        if filename.endswith('.txt'):
+            filepath = os.path.join(folder, filename)
+            with open(filepath, 'r', encoding='utf-8') as file:
+                texts[filename] = file.read()
+    return texts
+
+# 加载文本
+normal_texts = read_texts_from_folder(normal_text_directory)
+harmful_texts = read_texts_from_folder(harmful_text_directory)
+
+# 准备比较的句子对
+sentence_pairs = []
+for filename, normal_text in normal_texts.items():
+    if filename in harmful_texts:
+        harmful_text = harmful_texts[filename]
+        sentence_pairs.append([normal_text, harmful_text])
+
+# 计算并打印文本对的相似度
+if sentence_pairs:
+    similarity_scores = model.compute_score(sentence_pairs, max_passage_length=128, weights_for_different_modes=[0.4, 0.2, 0.4])
+    print(similarity_scores)
+else:
+    print("No matching files found.")
 
 # {
 #   'colbert': [0.7796499729156494, 0.4621465802192688, 0.4523794651031494, 0.7898575067520142], 

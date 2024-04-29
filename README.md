@@ -124,7 +124,21 @@ MedicalPromptGeneration/
 
 ### 使用
 
+#### MedicalPromptGeneration
+
+针对data中的图片，利用llavamed提取attributes list,得到attribute-sentensce(AS)
 ```bash
 python src/main.py 
+```
+
+#### metric
+
+text2text得到文本相似性
+```bash
+python text2text.py
+```
+text2image得到图像文本相似性
+```bash
+python text2image.py
 ```
 
