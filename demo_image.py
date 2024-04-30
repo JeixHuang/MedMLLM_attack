@@ -27,6 +27,6 @@ def collect_and_rename_images(source_dir, target_dir):
     print(f'共复制并重新编号了 {file_number - 1} 张图片。')
 
 # 使用示例
-source_directory = '/home/huangxijie/MedMLLM_attack/MedMQ-2k/X-Ray/Chest'  # 设置源目录路径
-target_directory = '/home/huangxijie/MedMLLM_attack/MedMQ-2k/X-Ray/Chest1'  # 设置目标目录路径
+source_directory = '/home/huangxijie/MedMLLM_attack/Medimg'  # 设置源目录路径
+target_directory = '/home/huangxijie/MedMLLM_attack/Medimg1'  # 设置目标目录路径
 collect_and_rename_images(source_directory, target_directory)

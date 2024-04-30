@@ -142,3 +142,14 @@ text2image得到图像文本相似性
 python text2image.py
 ```
 
+获取随机选取得到的3MAD-26K
+```bash
+python demo_imgpair.py
+python demo_randommatch.py
+```
+
+统计
+```bash
+python demo_count.py
+```
+
