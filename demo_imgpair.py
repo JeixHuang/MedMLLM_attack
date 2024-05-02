@@ -16,7 +16,7 @@ def replace_special_chars(original_path):
 # 创建一个CSV文件并写入标题行
 with open('3MAD-28K.csv', mode='w', newline='') as file:
     writer = csv.writer(file)
-    writer.writerow(['id', 'attack_category', 'img', 'attributes', 'prompts', 'policy', 'key_phrases'])
+    writer.writerow(['id', 'attack_category', 'img', 'original_attributes','attributes', 'prompts', 'policy', 'key_phrases'])
 
     id_counter = 0  # 初始化id计数器
 
@@ -45,11 +45,11 @@ with open('3MAD-28K.csv', mode='w', newline='') as file:
                         attributes = f"{os.path.basename(media_path)} and {os.path.basename(part_path)}"
                         
                         # 第一行，attack_category为unmatch
-                        writer.writerow([id_counter, 'unmatch', img, attributes, '', '', ''])
+                        writer.writerow([id_counter, 'unmatch', img,attributes, attributes, '', '', ''])
                         id_counter += 1
                         
                         # 第二行，attack_category为malicious
-                        writer.writerow([id_counter, 'malicious', img, attributes, '', '', ''])
+                        writer.writerow([id_counter, 'malicious', img,attributes, attributes, '', '', ''])
                         id_counter += 1
 
 print("CSV文件已生成。")

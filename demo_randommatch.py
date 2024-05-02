@@ -52,7 +52,7 @@ for row in data_rows:
 
 # 将更新后的数据写回data.csv
 with open('3MAD-28K.csv', mode='w', newline='') as file:
-    fieldnames = ['id', 'attack_category', 'img', 'attributes', 'prompts', 'policy', 'key_phrases']
+    fieldnames = ['id', 'attack_category', 'img', 'original_attributes','attributes', 'prompts', 'policy', 'key_phrases']
     writer = csv.DictWriter(file, fieldnames=fieldnames)
     writer.writeheader()
     writer.writerows(updated_rows)
