@@ -4,7 +4,7 @@ import random
 from glob import glob
 
 # 设定数据的根目录
-root_dir = "CMIC-94k"
+root_dir = "CMIC-96k"
 
 # 定义一个函数来替换文件路径中的特定字符
 def replace_special_chars(original_path):

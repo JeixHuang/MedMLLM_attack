@@ -1,32 +1,45 @@
 import os
-import shutil
 
-def collect_and_rename_images(source_dir, target_dir):
-    # 确保目标目录存在
-    os.makedirs(target_dir, exist_ok=True)
-
-    # 支持的图片格式
-    extensions = ('.png', '.jpg', '.jpeg')
-    # 初始化文件编号
-    file_number = 1
-
-    # 遍历源目录及其所有子目录
-    for root, dirs, files in os.walk(source_dir):
+def count_images_in_directory(directory):
+    """
+    Recursively count image files in the directory and its subdirectories.
+    """
+    image_count = 0
+    for root, dirs, files in os.walk(directory):
         for file in files:
-            if file.lower().endswith(extensions):
-                # 构造原始文件完整路径
-                full_file_path = os.path.join(root, file)
-                # 构造新的文件名和路径
-                new_file_name = f'{file_number:04d}' + os.path.splitext(file)[1]
-                new_file_path = os.path.join(target_dir, new_file_name)
-                # 复制文件
-                shutil.copy(full_file_path, new_file_path)
-                # 更新文件编号
-                file_number += 1
+            if file.lower().endswith(('.png', '.jpg')):
+                image_count += 1
+    return image_count
 
-    print(f'共复制并重新编号了 {file_number - 1} 张图片。')
+def main():
+    # 设置主文件夹路径
+    main_directory = 'CMIC-96k'  # 请替换为你的文件夹路径
 
-# 使用示例
-source_directory = '/home/huangxijie/MedMLLM_attack/Medimg'  # 设置源目录路径
-target_directory = '/home/huangxijie/MedMLLM_attack/Medimg1'  # 设置目标目录路径
-collect_and_rename_images(source_directory, target_directory)
+    # 统计主文件夹中的图片数量
+    main_folder_count = count_images_in_directory(main_directory)
+
+    # 准备写入统计数据的文本文件
+    output_filename = 'image_counts.txt'
+    with open(output_filename, 'w') as file:
+        file.write(f"Total images in main folder: {main_folder_count}\n")
+
+        # 遍历主文件夹中的每一个子文件夹
+        for subdir in os.listdir(main_directory):
+            subdir_path = os.path.join(main_directory, subdir)
+            if os.path.isdir(subdir_path):
+                # 统计子文件夹中的图片数量
+                subdir_count = count_images_in_directory(subdir_path)
+                file.write(f"Images in {subdir}: {subdir_count}\n")
+
+                # 遍历子文件夹中的每一个子子文件夹
+                for subsubdir in os.listdir(subdir_path):
+                    subsubdir_path = os.path.join(subdir_path, subsubdir)
+                    if os.path.isdir(subsubdir_path):
+                        # 统计子子文件夹中的图片数量
+                        subsubdir_count = count_images_in_directory(subsubdir_path)
+                        file.write(f"Images in {subdir}/{subsubdir}: {subsubdir_count}\n")
+
+    print(f"Statistics written to {output_filename}")
+
+if __name__ == "__main__":
+    main()
