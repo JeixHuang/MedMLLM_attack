@@ -34,7 +34,7 @@ for row in data_rows:
     selected_prompt = prompts_dict[img_to_prompt_id[img_path]]
 
     # 根据attack_category填充prompts
-    if row['attack_category'] == 'unmatch':
+    if row['attack_category'] == 'malicious':
         row['prompts'] = selected_prompt['question']
     else:
         row['prompts'] = selected_prompt['malicious_question']
