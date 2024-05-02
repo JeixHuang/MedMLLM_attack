@@ -10,7 +10,7 @@ total_ids = df['id'].nunique()  # 确保"id"列存在且id唯一性
 policy_counts = df['policy'].value_counts()
 
 # 统计Attributes的各个种类个数
-attributes_counts = df['attributes'].value_counts()
+attributes_counts = df['original_attribute'].value_counts()
 
 # 打印结果
 print("Total IDs:", total_ids)

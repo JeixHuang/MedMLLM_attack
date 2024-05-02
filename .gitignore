@@ -2,4 +2,5 @@
 /MedicalPromptGeneration/data/MedMQ-2k
 *.zip
 /zips
-/CMIC-96k
+/CMIC-111k
+/new_imgs

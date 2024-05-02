@@ -7,7 +7,7 @@ def count_images_in_directory(directory):
     image_count = 0
     for root, dirs, files in os.walk(directory):
         for file in files:
-            if file.lower().endswith(('.png', '.jpg')):
+            if file.lower().endswith(('.png', '.jpg','JPG','PNG')):
                 image_count += 1
     return image_count
 
