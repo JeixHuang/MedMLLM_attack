@@ -10,7 +10,7 @@ with open('general_prompts.csv', mode='r') as prompts_file:
 
 # 读取data.csv
 data_rows = []
-with open('3MAD-26K.csv', mode='r') as data_file:
+with open('3MAD-28K.csv', mode='r') as data_file:
     reader = csv.DictReader(data_file)
     for row in reader:
         data_rows.append(row)
@@ -51,7 +51,7 @@ for row in data_rows:
     updated_rows.append(row)
 
 # 将更新后的数据写回data.csv
-with open('3MAD-26K.csv', mode='w', newline='') as file:
+with open('3MAD-28K.csv', mode='w', newline='') as file:
     fieldnames = ['id', 'attack_category', 'img', 'attributes', 'prompts', 'policy', 'key_phrases']
     writer = csv.DictWriter(file, fieldnames=fieldnames)
     writer.writeheader()

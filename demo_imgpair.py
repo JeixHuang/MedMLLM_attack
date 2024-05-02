@@ -14,7 +14,7 @@ def replace_special_chars(original_path):
     return new_path
 
 # 创建一个CSV文件并写入标题行
-with open('3MAD-26K.csv', mode='w', newline='') as file:
+with open('3MAD-28K.csv', mode='w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(['id', 'attack_category', 'img', 'attributes', 'prompts', 'policy', 'key_phrases'])
 
