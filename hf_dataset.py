@@ -1,56 +1,18 @@
-import base64
-import numpy as np
 import pandas as pd
-from PIL import Image
-from io import BytesIO
-from datasets import Dataset
-import datasets
+from datasets import Dataset,Image
+import time
 
+df = pd.read_csv("MedMQ-2k/metadata.csv")
 
-def count_calls(func):
-    # 这是一个闭包，用来存储函数调用次数
-    def wrapper(*args, **kwargs):
-        wrapper.calls += 1
-        print(f"{func.__name__} has been called {wrapper.calls} times")
-        return func(*args, **kwargs)
+# Get unique attribute values
+attributes = df["attributes"].unique()
 
-    wrapper.calls = 0  # 初始化调用次数
-    return wrapper
+# Create a Hugging Face Dataset for each attribute value
+for attribute in attributes:
+    print(attribute)
+    time.sleep(5)
 
-
-@count_calls
-def image_to_base64(image_path):
-    try:
-        # 使用原始字符串来避免路径中的转义字符问题
-        with Image.open(r"{}".format(image_path)) as image:
-            if image.mode != "RGB":
-                image = image.convert("RGB")
-            np_img = np.asarray(image)
-            pil_img = Image.fromarray(np.uint8(np_img))
-            feature = datasets.Image()
-            pil_img = feature.encode_example(pil_img)
-            print(pil_img.keys())
-            return pil_img
-    except FileNotFoundError:
-        print(f"File not found: {image_path}")
-        return None
-    except IOError:
-        print(f"Cannot open image: {image_path}")
-        return None
-    except Exception as e:
-        print(f"Error converting image {image_path} to base64: {e}")
-        return None
-
-
-# 读取CSV文件
-df = pd.read_csv("3MAD-24K.csv")
-
-# 替换图像路径为base64编码的字符串
-df["img"] = df["img"].apply(image_to_base64)
-
-
-# 将DataFrame转换为Hugging Face Dataset
-dataset = Dataset.from_pandas(df)
-
-# 上传到Hugging Face Hub（确保已经设置好认证）
-dataset.push_to_hub("MedMLLM-attack/3MAD-24K")
+    attribute_dataset = Dataset.from_pandas(df[df["attributes"] == attribute])
+    attribute_dataset = attribute_dataset.map(lambda example: {"image": example["file_name"]}, batched=True)
+    attribute_dataset = attribute_dataset.cast_column("image", Image())
+    attribute_dataset.push_to_hub("MedMLLM-attack/3MAD-28K", split=attribute.split(" ")[-1].replace(".","").replace("-", ""), max_shard_size="1GB")
