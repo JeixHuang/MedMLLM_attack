@@ -1,30 +1,37 @@
 import argparse
+import os
+import time
 import torch
 from PIL import Image
-import os
-from transformers import CLIPProcessor, CLIPModel
+import open_clip
 
-from open_clip import create_model_from_pretrained, get_tokenizer
-
-model, preprocess = create_model_from_pretrained('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
-tokenizer = get_tokenizer('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
-
-# Load the CLIP model and processor
-model = CLIPModel.from_pretrained('openai/clip-vit-base-patch32')
-processor = CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32')
-
+# Load the CLIP model with open_clip
+model, preprocess, _ = open_clip.create_model_and_transforms('ViT-B-32', pretrained='laion2b_s34b_b79k')
+tokenizer = open_clip.get_tokenizer('ViT-B-32')
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model.to(device)
 model.eval()
 
+def time_decorator(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        print(f"函数 {func.__name__} 运行时间：{end_time - start_time} 秒")
+        return result
+    return wrapper
+
+@time_decorator
 def get_clip_score(image_path, text):
-    max_length = 77  # Adjusted based on your model's configuration
-    image = Image.open(image_path)
-    inputs = processor(text=text[:max_length], images=image, return_tensors="pt", padding=True)
-    inputs = {k: v.to(device) for k, v in inputs.items()}  # Ensure all inputs are on the same device as the model
-    outputs = model(**inputs)
-    logits_per_image = outputs.logits_per_image
-    return logits_per_image.item()
+    image = preprocess(Image.open(image_path)).unsqueeze(0).to(device)
+    text_tokens = tokenizer([text], truncate=True).to(device)
+    with torch.no_grad(), torch.cuda.amp.autocast():
+        image_features = model.encode_image(image)
+        text_features = model.encode_text(text_tokens)
+        image_features /= image_features.norm(dim=-1, keepdim=True)
+        text_features /= text_features.norm(dim=-1, keepdim=True)
+        text_probs = (100.0 * image_features @ text_features.T).softmax(dim=-1)
+    return text_probs.max().item()
 
 def main():
     parser = argparse.ArgumentParser(description='Compare images with textual descriptions using CLIP.')
@@ -37,9 +44,8 @@ def main():
     normal_text_directory = args.normal_text_folder
     harmful_text_directory = args.harmful_text_folder
 
-    # Load all images
     test_imgs = [os.path.join(image_directory, f) for f in os.listdir(image_directory) if f.endswith(('.png', '.jpg', '.jpeg'))]
-    
+
     for img_file in test_imgs:
         base_name = os.path.splitext(os.path.basename(img_file))[0]
         normal_text_path = os.path.join(normal_text_directory, base_name + '.txt')

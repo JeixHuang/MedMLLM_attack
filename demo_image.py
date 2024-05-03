@@ -13,7 +13,7 @@ def count_images_in_directory(directory):
 
 def main():
     # 设置主文件夹路径
-    main_directory = 'CMIC-96k'  # 请替换为你的文件夹路径
+    main_directory = 'CMIC-111k'  # 请替换为你的文件夹路径
 
     # 统计主文件夹中的图片数量
     main_folder_count = count_images_in_directory(main_directory)

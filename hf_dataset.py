@@ -15,4 +15,8 @@ for attribute in attributes:
     attribute_dataset = Dataset.from_pandas(df[df["original_attribute"] == attribute])
     attribute_dataset = attribute_dataset.map(lambda example: {"image": example["file_name"]}, batched=True)
     attribute_dataset = attribute_dataset.cast_column("image", Image())
-    attribute_dataset.push_to_hub("MedMLLM-attack/3MAD-70K", split=attribute.split(" ")[-1], max_shard_size="1GB")
+    split_name = attribute.replace(" and ", "_")
+    print(split_name)
+    attribute_dataset.push_to_hub(
+        "MedMLLM-attack/3MAD-70K", split=split_name, max_shard_size="1GB"
+    )

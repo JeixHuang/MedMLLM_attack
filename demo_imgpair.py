@@ -4,7 +4,7 @@ import random
 from glob import glob
 
 # 设定数据的根目录
-root_dir = "CMIC-96k"
+root_dir = "CMIC-111k"
 
 # 定义一个函数来替换文件路径中的特定字符
 def replace_special_chars(original_path):
@@ -14,7 +14,7 @@ def replace_special_chars(original_path):
     return new_path
 
 # 创建一个CSV文件并写入标题行
-with open('3MAD-28K.csv', mode='w', newline='') as file:
+with open('3MAD-70K.csv', mode='w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(['id', 'file_name', 'original_attribute','unmatch_attribute', 'normal_prompt','harmful_prompt', 'policy', 'key_phrases'])
 

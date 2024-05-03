@@ -155,11 +155,11 @@ python demo_count.py
 
 
 
-# 3MAD-28k: A Comprehensive Assessment of ASR in Medical Models
+# 3MAD-70K: Multimodal Medical Model Attack Dataset, A Comprehensive Assessment of ASR in Medical Models
 
 ## Overview
 
-This repo contains the source code of DecodingTrust. This research endeavor is designed to help researchers better understand the capabilities, limitations, and potential risks associated with deploying these state-of-the-art Medical Multimodal Large Language Models (MedMLLMs). See our paper for details.
+This repo contains the source code of 3MAD-70K. This research endeavor is designed to help researchers better understand the capabilities, limitations, and potential risks associated with deploying these state-of-the-art Medical Multimodal Large Language Models (MedMLLMs). See our paper for details.
 
 [**Our paper**](https://arxiv.org/) 
 
@@ -167,7 +167,7 @@ This repo contains the source code of DecodingTrust. This research endeavor is d
 
 https://arxiv.org/pdf/
 
-本项目由共**9**大类不同介质，**19**类不同部位的医学图像集（CMIC-96K）和**18**种基于用户需求的询问指令交叉构建而成，符合临床上可能出现的**unmatch attack** and **malicious attack**的具体攻击类型
+本项目由共**9**大类不同介质，**18**类不同部位的医学图像集（CMIC-96K）和**18**种基于用户需求的询问指令交叉构建而成，符合临床上可能出现的**unmatch attack** and **malicious attack**的具体攻击类型
 
 图片集（CMIC-96K）组成：
 ```plaintext
