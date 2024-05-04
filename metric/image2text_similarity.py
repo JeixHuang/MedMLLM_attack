@@ -57,6 +57,33 @@ class ImageTextSimilarity:
             print(f"Text file not found for image {image_path}")
         return pd.DataFrame(results, columns=['Image', 'Text File', 'Similarity Score'])
 
+    @time_decorator
+    def get_clip_score_path(self, image_path, text):
+        # Truncate or pad the text to a maximum length of 77 (typical for CLIP model)
+        max_length = 77
+        text = text[:max_length]
+
+        # Prepare image and text inputs for the model
+        image = Image.open(image_path)
+        inputs = self.processor(text=text, images=image, return_tensors="pt", padding=True)
+        inputs = {k: v.to(self.device) for k, v in inputs.items()}
+
+        with torch.no_grad():
+            outputs = self.model(**inputs)
+        
+        logits_per_image = outputs.logits_per_image
+        return logits_per_image.item()
+
+    def calculate_similarity_path(self, image_path, text):
+        if not os.path.exists(image_path):
+            raise FileNotFoundError("The image file does not exist.")
+        score = self.get_clip_score_path(image_path, text)
+        return pd.DataFrame({
+            'Image': [image_path],
+            'Text': [text],
+            'Similarity Score': [score]
+        })
+        
 # Below is how to use the updated function
 if __name__ == '__main__':
     similarity_calculator_i2t = ImageTextSimilarity()
