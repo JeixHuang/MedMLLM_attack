@@ -83,6 +83,37 @@ class ImageTextSimilarity:
             'Text': [text],
             'Similarity Score': [score]
         })
+
+    @time_decorator
+    def get_clip_score_hf(self, image, text):
+        # Set a fixed max length for text sequences in the CLIP model
+        max_length = 77  # This is the typical max sequence length for text in the CLIP model
+
+        # Truncate or pad the text to this maximum length
+        text = text[:max_length]
+
+        # Check if the image is already a PIL.Image object
+        if not isinstance(image, Image.Image):
+            # If it's a path, open it
+            image = Image.open(image)
+
+        inputs = self.processor(text=text, images=image, return_tensors="pt", padding=True)
+        inputs = {k: v.to(self.device) for k, v in inputs.items()}
+        with torch.no_grad():
+            outputs = self.model(**inputs)
+        logits_per_image = outputs.logits_per_image
+        return logits_per_image.item()
+
+    def calculate_similarity_hf(self, image, text):
+        if not isinstance(image, Image.Image) and not os.path.exists(image):
+            raise FileNotFoundError("The image file does not exist or image is not an Image object.")
+        
+        score = self.get_clip_score_hf(image, text)
+        return pd.DataFrame({
+            'Image': ['In-memory image' if isinstance(image, Image.Image) else image],
+            'Text': [text],
+            'Similarity Score': [score]
+        })
         
 # Below is how to use the updated function
 if __name__ == '__main__':

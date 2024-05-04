@@ -68,6 +68,37 @@ class ImageTextSimilarity_bio:
         }
 
         return result
+    
+    def calculate_similarity_hf(self, image, text):
+        # Check if the image is already a PIL.Image object
+        if not isinstance(image, Image.Image):
+            # If it's a path or URL, open it
+            image = Image.open(urlopen(image) if image.startswith('http') else image)
+        
+        # Prepare image using model-specific preprocessing
+        image = self.preprocess(image).unsqueeze(0).to(self.device)
+
+        # Prepare text
+        tokenized_text = self.tokenizer([f'this is a photo of {text}'], context_length=256).to(self.device)
+
+        # Model inference
+        with torch.no_grad(), torch.cuda.amp.autocast():
+            image_features = self.model.encode_image(image)
+            text_features = self.model.encode_text(tokenized_text)
+
+            image_features /= image_features.norm(dim=-1, keepdim=True)
+            text_features /= text_features.norm(dim=-1, keepdim=True)
+
+            scores = (100.0 * image_features @ text_features.T).softmax(dim=-1).flatten().tolist()
+
+        # Result as a dictionary
+        result = {
+            'Image': 'In-memory image' if isinstance(image, Image.Image) else 'Image path',
+            'Text': text,
+            'Similarity Score': scores[0]
+        }
+
+        return result
 
     def prepare_texts(self, text_folder):
         # List of text files corresponding to different categories or descriptions
