@@ -16,7 +16,7 @@ class TextSimilarityCalculator:
                     texts[filename] = file.read()
         return texts
 
-    def compute_similarities(self, normal_text_folder, harmful_text_folder):
+    def compute_similarities_folder(self, normal_text_folder, harmful_text_folder):
         normal_texts = self.read_texts_from_folder(normal_text_folder)
         harmful_texts = self.read_texts_from_folder(harmful_text_folder)
 
@@ -36,4 +36,11 @@ class TextSimilarityCalculator:
             return df_scores
         else:
             return "No matching files found."
+    
+    def compute_similarity_text(self, text1, text2):
+        similarity_score = self.model.compute_score([[text1, text2]], max_passage_length=128, weights_for_different_modes=[0.4, 0.2, 0.4])
+        df_scores = pd.DataFrame(similarity_score)
+        df_scores = df_scores[[ 'colbert', 'sparse', 'dense', 'sparse+dense', 'colbert+sparse+dense']]
+        return df_scores
+
 

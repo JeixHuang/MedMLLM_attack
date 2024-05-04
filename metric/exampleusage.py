@@ -15,7 +15,7 @@ similarity_calculator_i2t = ImageTextSimilarity()
 similarity_calculator_i2t_bio = ImageTextSimilarity_bio()
 
 # 计算文本间的相似度并打印结果
-results = similarity_calculator_t2t.compute_similarities(normal_text_folder, harmful_text_folder)
+results = similarity_calculator_t2t.compute_similarities_folder(normal_text_folder, harmful_text_folder)
 print(results)
 
 # 定义一个函数用来计算并输出每张图片与两种文本的相似度分数

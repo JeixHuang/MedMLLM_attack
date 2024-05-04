@@ -152,7 +152,11 @@ python demo_randommatch.py
 ```bash
 python demo_count.py
 ```
-
+计算prompts的相似性分数
+```bash
+python demo_promptst2t.py
+python demo_dealsimilarity.py
+```
 
 
 # 3MAD-70K: Multimodal Medical Model Attack Dataset, A Comprehensive Assessment of ASR in Medical Models
