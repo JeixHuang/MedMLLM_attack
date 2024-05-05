@@ -10,11 +10,12 @@ class ImageTextSimilarity_bio:
         # Loading the BiomedCLIP model
         self.model, self.preprocess, _ = open_clip.create_model_and_transforms('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
         self.tokenizer = open_clip.get_tokenizer('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
-        
+
         # Configure device
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model.to(self.device)
         self.model.eval()
+        print("biomedclip model loaded successfully.")
 
     def calculate_similarity(self, image_path, text_folder):
         # Prepare image
@@ -68,13 +69,13 @@ class ImageTextSimilarity_bio:
         }
 
         return result
-    
+
     def calculate_similarity_hf(self, image, text):
         # Check if the image is already a PIL.Image object
         if not isinstance(image, Image.Image):
             # If it's a path or URL, open it
             image = Image.open(urlopen(image) if image.startswith('http') else image)
-        
+
         # Prepare image using model-specific preprocessing
         image = self.preprocess(image).unsqueeze(0).to(self.device)
 

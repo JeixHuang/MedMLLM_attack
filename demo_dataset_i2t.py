@@ -1,65 +1,42 @@
-from datasets import load_dataset
 import pandas as pd
-from metric.image2text_similarity import ImageTextSimilarity  
+from metric.image2text_similarity import ImageTextSimilarity
 from metric.BiomedCLIP import ImageTextSimilarity_bio
+from PIL import Image
 import os
 
-# 列出所有分割
-splits = [
-    "Dermoscopy_Skin", "MRI_Alzheimer", "MRI_Brain", "Fundus_Retina",
-    "Mamography_Breast", "OCT_Retina", "CT_Chest", "CT_Heart", "CT_Brain",
-    "Xray_Chest", "Xray_Skeleton", "Xray_Dental", "Endoscopy_Gastroent",
-    "Ultrasound_Baby", "Ultrasound_Breast", "Ultrasound_Carotid",
-    "Ultrasound_Ovary", "Ultrasound_Brain"
-]
-
-# 创建相似度计算器实例
+# Setup similarity calculators
 similarity_calculator_i2t = ImageTextSimilarity()  
 similarity_calculator_i2t_bio = ImageTextSimilarity_bio()
 
-# 定义函数计算图像与文本的相似度，并存储结果
-def calculate_image_text_similarity(dataset_name, splits):
-    all_results = []  # 用于收集所有结果的列表
+def process_image_text_similarity(row):
+    # Load the image from the file path
+    image_path = row['file_name']  # 确保这是一个路径
+    image = Image.open(image_path)
 
-    for split in splits:
-        # 加载数据集的当前分割
-        data = load_dataset(dataset_name, split=split)
+    # 使用路径而不是图像对象
+    score_clip_original = similarity_calculator_i2t.calculate_similarity_path(image_path, row['original_attribute'])
+    score_clipbio_original = similarity_calculator_i2t_bio.calculate_similarity_path(image_path, row['original_attribute'])
+    score_clip_unmatch = similarity_calculator_i2t.calculate_similarity_path(image_path, row['unmatch_attribute'])
+    score_clipbio_unmatch = similarity_calculator_i2t_bio.calculate_similarity_path(image_path, row['unmatch_attribute'])
 
-        # 遍历数据集中的每条数据
-        for item in data:
-            image_path = item['image']  # 图片路径
-            original_text = item['original_attribute']  # 原始文本
-            unmatch_text = item['unmatch_attribute']  # 不匹配文本
+    return pd.Series({
+        'Score_CLIP_original': score_clip_original,
+        'Score_CLIPbio_original': score_clipbio_original,
+        'Score_CLIP_unmatch': score_clip_unmatch,
+        'Score_CLIPbio_unmatch': score_clipbio_unmatch
+    })
 
-            # 计算图片与原始文本的相似度
-            results_original = similarity_calculator_i2t.calculate_similarity_hf(image_path, original_text)
-            results_original_bio = similarity_calculator_i2t_bio.calculate_similarity_hf(image_path, original_text)
+def main():
+    # Load the dataset
+    df = pd.read_csv('CMIC-111k/3MAD-70K.csv')
 
-            # 计算图片与不匹配文本的相似度
-            results_unmatch = similarity_calculator_i2t.calculate_similarity_hf(image_path, unmatch_text)
-            results_unmatch_bio = similarity_calculator_i2t_bio.calculate_similarity_hf(image_path, unmatch_text)
+    # Process each image and text, and store results
+    results = df.apply(process_image_text_similarity, axis=1)
+    final_df = pd.concat([df[['id', 'file_name', 'original_attribute', 'unmatch_attribute']], results], axis=1)
 
-            # 保存每个结果，包括分割名称
-            all_results.append({
-                'Split': split,
-                'Image': image_path,
-                'Text Type': 'Original',
-                'Similarity Score (CLIP-ViT)': results_original,
-                'Similarity Score (BiomedCLIP)': results_original_bio
-            })
-            all_results.append({
-                'Split': split,
-                'Image': image_path,
-                'Text Type': 'Unmatch',
-                'Similarity Score (CLIP-ViT)': results_unmatch,
-                'Similarity Score (BiomedCLIP)': results_unmatch_bio
-            })
+    # Save results to CSV
+    final_df.to_csv('ret_dataset.csv', index=False)
+    print("Results saved to ret_dataset.csv")
 
-    # 创建一个DataFrame来显示所有结果
-    results_df = pd.DataFrame(all_results)
-    return results_df
-
-# 调用函数并保存结果到 CSV 文件
-results_df = calculate_image_text_similarity("MedMLLM-attack/3MAD-70K", splits)
-results_df.to_csv('image_text_similarity_results.csv', index=False)
-print(results_df)
+if __name__ == "__main__":
+    main()

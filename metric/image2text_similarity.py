@@ -6,11 +6,13 @@ from transformers import CLIPProcessor, CLIPModel
 import time
 
 def time_decorator(func):
+    log_file = 'function_times.log'  # 日志文件
     def wrapper(*args, **kwargs):
         start_time = time.time()
         result = func(*args, **kwargs)
         end_time = time.time()
-        print(f"Function {func.__name__} ran in {end_time - start_time} seconds")
+        with open(log_file, 'a') as f:
+            f.write(f"Function {func.__name__} ran in {end_time - start_time} seconds\n")
         return result
     return wrapper
 
@@ -21,6 +23,7 @@ class ImageTextSimilarity:
         self.processor = CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32')
         self.model.to(self.device)
         self.model.eval()
+        print("openai model loaded successfully.")
 
     @time_decorator
     def get_clip_score(self, image_path, text):
@@ -37,8 +40,6 @@ class ImageTextSimilarity:
             outputs = self.model(**inputs)
         logits_per_image = outputs.logits_per_image
         return logits_per_image.item()
-
-
 
     def calculate_similarity(self, image_path, text_folder):
         results = []
@@ -70,7 +71,7 @@ class ImageTextSimilarity:
 
         with torch.no_grad():
             outputs = self.model(**inputs)
-        
+
         logits_per_image = outputs.logits_per_image
         return logits_per_image.item()
 
@@ -107,14 +108,14 @@ class ImageTextSimilarity:
     def calculate_similarity_hf(self, image, text):
         if not isinstance(image, Image.Image) and not os.path.exists(image):
             raise FileNotFoundError("The image file does not exist or image is not an Image object.")
-        
+
         score = self.get_clip_score_hf(image, text)
         return pd.DataFrame({
             'Image': ['In-memory image' if isinstance(image, Image.Image) else image],
             'Text': [text],
             'Similarity Score': [score]
         })
-        
+
 # Below is how to use the updated function
 if __name__ == '__main__':
     similarity_calculator_i2t = ImageTextSimilarity()
