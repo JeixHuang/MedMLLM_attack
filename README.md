@@ -158,6 +158,9 @@ python demo_promptst2t.py
 python demo_dealsimilarity.py
 ```
 
+#### 文件
+aggregated_scores.csv  18类图片和attribute相似分数
+averaged_file.csv 540-540，18类prompts之间的相关性分析分数
 
 # 3MAD-70K: Multimodal Medical Model Attack Dataset, A Comprehensive Assessment of ASR in Medical Models
 
