@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
     device = torch.device(f"cuda:{args.device}")
     model, _, preprocess = create_model_and_transforms(
-        "ViT-B-16", pretrained="datacomp_xl_s13b_b90k"
+        "ViT-B-16", pretrained="openai"
     )
     tokenizer = get_tokenizer('ViT-B-16')
 
@@ -104,16 +104,16 @@ if __name__ == "__main__":
 
     results = process_split(args.split, device, model, preprocess, tokenizer)
     print(results)
-    # with open(f"metric/img2text_results/{args.split}.csv", mode="w", newline="") as file:
-    #     writer = csv.writer(file)
-    #     writer.writerow(
-    #         [
-    #             "id",
-    #             "file_name",
-    #             "original_attribute",
-    #             "origin_score",
-    #             "unmatch_attribute",
-    #             "unmatch_score",
-    #         ]
-    #     )
-    #     writer.writerows(results)
+    with open(f"metric/na2med_img2text_results/{args.split}.csv", mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(
+            [
+                "id",
+                "file_name",
+                "original_attribute",
+                "origin_score",
+                "unmatch_attribute",
+                "unmatch_score",
+            ]
+        )
+        writer.writerows(results)

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 定义session名称
-SESSION_NAME="MedicalPromptSession"
+SESSION_NAME="Nature2medical"
 
 # 定义splits列表
 splits=(
@@ -34,7 +34,7 @@ do
     tmux new-window -t $SESSION_NAME -n $split
     tmux send-keys -t $SESSION_NAME:$split 'bash' C-m
     tmux send-keys -t $SESSION_NAME:$split 'conda activate MedicalPrompt' C-m
-    tmux send-keys -t $SESSION_NAME:$split "python clipscore_split.py --device 0 --split $split" C-m
+    tmux send-keys -t $SESSION_NAME:$split "python na2med_clipscore.py --device 0 --split $split" C-m
 done
 
 # 切换到第一个window
