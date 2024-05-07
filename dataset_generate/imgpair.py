@@ -2,9 +2,15 @@ import os
 import csv
 import random
 from glob import glob
+import json
 
-# 设定数据的根目录
-root_dir = "CMIC-111k"
+def load_config(config_path):
+    with open(config_path, 'r', encoding='utf-8') as file:
+        return json.load(file)
+
+config = load_config("config.json")
+output_path= config.get("count_path","")
+root_dir = config.get("root_dir","")
 
 # 定义一个函数来替换文件路径中的特定字符
 def replace_special_chars(original_path):
@@ -13,8 +19,10 @@ def replace_special_chars(original_path):
         os.rename(original_path, new_path)
     return new_path
 
+
+
 # 创建一个CSV文件并写入标题行
-with open('3MAD-70K.csv', mode='w', newline='') as file:
+with open(output_path, mode='w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(['id', 'file_name', 'original_attribute','unmatch_attribute', 'normal_prompt','harmful_prompt', 'policy', 'key_phrases'])
 

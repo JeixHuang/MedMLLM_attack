@@ -1,16 +1,27 @@
 import csv
 import random
+import json
+
+def load_config(config_path):
+    with open(config_path, 'r', encoding='utf-8') as file:
+        return json.load(file)
+
+config = load_config("config.json")
+output_path= config.get("count_path","")
+root_dir = config.get("root_dir","")
+prompt_path = config.get("prompt_path","")
+
 
 # 加载general_prompts.csv
 prompts_dict = {}
-with open("general_prompts.csv", mode="r") as prompts_file:
+with open(prompt_path, mode="r") as prompts_file:
     reader = csv.DictReader(prompts_file)
     for row in reader:
         prompts_dict[row["id"]] = row
 
 # 读取data.csv
 data_rows = []
-with open("3MAD-70K.csv", mode="r") as data_file:
+with open(output_path, mode="r") as data_file:
     reader = csv.DictReader(data_file)
     for row in reader:
         data_rows.append(row)
@@ -63,7 +74,7 @@ for row in data_rows:
     updated_rows.append(row)
 
 # 将更新后的数据写回data.csv
-with open("3MAD-70K.csv", mode="w", newline="") as file:
+with open(output_path, mode="w", newline="") as file:
     fieldnames = [
         "id",
         "file_name",
