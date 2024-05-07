@@ -1,0 +1,5 @@
+{
+    "input_path": "../general_prompts.csv",
+    "column_name": "malicious_question",
+    "output_path": "540_prompts_output.csv"
+}
