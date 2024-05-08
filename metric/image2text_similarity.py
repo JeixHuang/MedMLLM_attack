@@ -116,24 +116,24 @@ class ImageTextSimilarity:
             'Similarity Score': [score]
         })
 
-# Below is how to use the updated function
-if __name__ == '__main__':
-    similarity_calculator_i2t = ImageTextSimilarity()
-    normal_text_folder = './output_normal'
-    harmful_text_folder = './output_harmful'
-    image_folder = './images'
+# # Below is how to use the updated function
+# if __name__ == '__main__':
+#     similarity_calculator_i2t = ImageTextSimilarity()
+#     normal_text_folder = './output_normal'
+#     harmful_text_folder = './output_harmful'
+#     image_folder = './images'
 
-    def calculate_and_print_image_text_similarity(image_folder, normal_text_folder, harmful_text_folder):
-        for image_file in os.listdir(image_folder):
-            if image_file.lower().endswith(('.png', '.jpg', '.jpeg')):
-                image_path = os.path.join(image_folder, image_file)
-                results_normal = similarity_calculator_i2t.calculate_similarity(image_path, normal_text_folder)
-                results_harmful = similarity_calculator_i2t.calculate_similarity(image_path, harmful_text_folder)
+#     def calculate_and_print_image_text_similarity(image_folder, normal_text_folder, harmful_text_folder):
+#         for image_file in os.listdir(image_folder):
+#             if image_file.lower().endswith(('.png', '.jpg', '.jpeg')):
+#                 image_path = os.path.join(image_folder, image_file)
+#                 results_normal = similarity_calculator_i2t.calculate_similarity(image_path, normal_text_folder)
+#                 results_harmful = similarity_calculator_i2t.calculate_similarity(image_path, harmful_text_folder)
                 
-                print(f"Results for {image_path} with normal texts:")
-                print(results_normal)
-                print(f"Results for {image_path} with harmful texts:")
-                print(results_harmful)
+#                 print(f"Results for {image_path} with normal texts:")
+#                 print(results_normal)
+#                 print(f"Results for {image_path} with harmful texts:")
+#                 print(results_harmful)
 
-    # Execute the function
-    calculate_and_print_image_text_similarity(image_folder, normal_text_folder, harmful_text_folder)
+#     # Execute the function
+#     calculate_and_print_image_text_similarity(image_folder, normal_text_folder, harmful_text_folder)

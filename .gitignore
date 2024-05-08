@@ -2,6 +2,6 @@
 /MedicalPromptGeneration/data/MedMQ-2k
 *.zip
 /zips
-/CMIC-111k
+/CMIC
 /new_imgs
 /ASR/models

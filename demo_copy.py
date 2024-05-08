@@ -6,7 +6,7 @@ def collect_and_rename_images(source_dir, target_dir):
     os.makedirs(target_dir, exist_ok=True)
 
     # 支持的图片格式
-    extensions = ('.png', '.jpg', '.jpeg','ima')
+    extensions = ('.png', '.jpg', '.jpeg')
     # 初始化文件编号
     file_number = 1
 
@@ -27,6 +27,6 @@ def collect_and_rename_images(source_dir, target_dir):
     print(f'共复制并重新编号了 {file_number - 1} 张图片。')
 
 # 使用示例
-source_directory = '/home/huangxijie/MedMLLM_attack/new_imgs/01_MRI_Data'  # 设置源目录路径
-target_directory = '/home/huangxijie/MedMLLM_attack/new_imgs/Lumbar'  # 设置目标目录路径
+source_directory = '/home/huangxijie/MedMLLM_attack/CMIC'  # 设置源目录路径
+target_directory = '/home/huangxijie/MedMLLM_attack/CMIC1'  # 设置目标目录路径
 collect_and_rename_images(source_directory, target_directory)

@@ -1,8 +1,0 @@
-{
-    "imgselect_path": "imgpair.py",
-    "randommatch_path": "randommatch.py",
-    "count_path": "count.py",
-    "output_path": "3MAD-ret.csv",
-    "img_dir":"CMIC",
-    "prompt_path":"../general_prompts.csv"
-}
