@@ -2,7 +2,7 @@ import pandas as pd
 from datasets import Dataset,Image
 import time
 import os
-# os.environ['HF_API_TOKEN'] = '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'
+os.environ['HF_API_TOKEN'] = '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'
 # from transformers import CLIPModel
  
 # model = CLIPModel.from_pretrained("openai/clip-vit-large-patch14", from_tf=True)

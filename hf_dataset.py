@@ -2,9 +2,9 @@ import pandas as pd
 from datasets import Dataset,Image
 import time
 import os
-# os.environ['HF_API_TOKEN'] = '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'
+os.environ['HF_API_TOKEN'] = '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'
 
-df = pd.read_csv("CMIC/3MAD-68K.csv")
+df = pd.read_csv("CMIC/3MAD-66K.csv")
 
 # Get unique attribute values
 attributes = df["original_attribute"].unique()
@@ -20,5 +20,5 @@ for attribute in attributes:
     split_name = attribute.replace(" and ", "_")
     print(split_name)
     attribute_dataset.push_to_hub(
-        "MedMLLM-attack/3MAD-68K", split=split_name, max_shard_size="1GB"
+        "MedMLLM-attack/3MAD-66K", split=split_name, max_shard_size="1GB"
     )

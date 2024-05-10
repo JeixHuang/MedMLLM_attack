@@ -1,7 +1,7 @@
 import pandas as pd
 
 # 读取原始 CSV 文件
-file_path = 'CMIC/3MAD-68K.csv'
+file_path = 'CMIC/3MAD-66K.csv'
 data = pd.read_csv(file_path)
 
 # 初始化一个空的 DataFrame 以存储筛选后的数据
