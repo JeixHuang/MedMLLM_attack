@@ -170,7 +170,7 @@ This repo contains the source code of 3MAD-70K. This research endeavor is design
 
 [**Our paper**](https://arxiv.org/) 
 
-*Xijie Huang, Xinyuan Wang, Hantao Zhang, Jiawen Xi, Chengwei Pan.*
+*Xijie Huang, Xinyuan Wang, Hantao Zhang, Jiawen Xi,Jingkun An ,Hao Wang, Chengwei Pan.*
 
 https://arxiv.org/pdf/
 
