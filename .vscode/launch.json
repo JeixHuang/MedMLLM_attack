@@ -8,9 +8,8 @@
             "name": "Python 调试程序: 包含参数的当前文件",
             "type": "debugpy",
             "request": "launch",
-            "program": "clipscore_split_nature.py",
+            "program": "metric/ret.py",
             "console": "integratedTerminal",
-            "args": "${command:pickArgs}"
         }
     ]
 }

@@ -30,7 +30,7 @@ def clip_score(model, image, tokenized_text) -> float:
     return score.item()
 
 def process_split(split: str, device: torch.device, model: Any, preprocess: Any, tokenizer: Any) -> List[Tuple]:
-    dataset = load_dataset("theodor1289/imagenet-1k_tiny", split=split)
+    dataset = load_dataset("../ImageNet1K-val", split=split, trust_remote_code=True)
     results = []
     all_labels = list(IMAGENET2012_CLASSES.values())
 

@@ -10,16 +10,17 @@ from tqdm import tqdm
 def clip_score_image(model, preprocess, tokenizer, device, image_path, text):
     image = Image.open(image_path).convert('RGB')
     image = preprocess(image).unsqueeze(0).to(device)  # Apply preprocessing and add batch dimension
+    # print(image.shape)
     
     # Tokenize text and move it to the correct device
     tokenized_text = tokenizer([text])
     tokenized_text = tokenized_text.to(device)  # Move tensor to the device
-
+    # print(tokenized_text.shape)
     with torch.no_grad():
         image_features, text_features, logit_scale = model(image, tokenized_text)
         # print(f"Logit scale: {logit_scale.item()}")
-        score = (logit_scale.exp() * image_features @ text_features.t()).detach()
-
+        score = (logit_scale* image_features @ text_features.t()).detach()
+        # print(score.item())
     return score.item()
 
 
@@ -39,10 +40,10 @@ def process_csv(input_csv, output_csv, model_nature, preprocess_nature,tokenizer
         text_sim_score2 = text_similarity_calculator.compute_similarity_text(unmat_resp, norm_prompt)
 
         # 计算图片和文本之间的相似度
-        image_text_sim_score1 = clip_score_image(model_nature, preprocess_nature,tokenizer_nature, device, image_path, mal_resp)/pow(10,36)
-        image_text_sim_score2 = clip_score_image(model_nature, preprocess_nature,tokenizer_nature, device, image_path, unmat_resp)/pow(10,36)
-        image_text_sim_score3 = clip_score_image(model_bio, preprocess_bio,tokenizer_bio, device, image_path, mal_resp)/pow(10,36)
-        image_text_sim_score4 = clip_score_image(model_bio, preprocess_bio,tokenizer_bio, device, image_path, unmat_resp)/pow(10,36)
+        image_text_sim_score1 = clip_score_image(model_nature, preprocess_nature,tokenizer_nature, device, image_path, mal_resp)
+        image_text_sim_score2 = clip_score_image(model_nature, preprocess_nature,tokenizer_nature, device, image_path, unmat_resp)
+        image_text_sim_score3 = clip_score_image(model_bio, preprocess_bio,tokenizer_bio, device, image_path, mal_resp)
+        image_text_sim_score4 = clip_score_image(model_bio, preprocess_bio,tokenizer_bio, device, image_path, unmat_resp)
         results.append([
             row['id'], text_sim_score1.iloc[0,4].tolist(), text_sim_score2.iloc[0,4].tolist(), image_text_sim_score1, image_text_sim_score2,image_text_sim_score3,image_text_sim_score4
         ])
