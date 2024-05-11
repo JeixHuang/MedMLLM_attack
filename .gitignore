@@ -6,3 +6,4 @@
 /new_imgs
 /ASR/models
 *.tar.gz
+/imagenet-1k

@@ -16,8 +16,13 @@ def collect_and_rename_images(source_dir, target_dir):
             if file.lower().endswith(extensions):
                 # 构造原始文件完整路径
                 full_file_path = os.path.join(root, file)
-                # 构造新的文件名和路径
-                new_file_name = f'{file_number:04d}' + os.path.splitext(file)[1]
+                
+                # 如果是JPEG文件，将后缀改为.jpg
+                if file.lower().endswith('.JPEG'):
+                    new_file_name = f'{file_number:04d}.jpg'
+                else:
+                    new_file_name = f'{file_number:04d}' + os.path.splitext(file)[1]
+
                 new_file_path = os.path.join(target_dir, new_file_name)
                 # 复制文件
                 shutil.copy(full_file_path, new_file_path)
@@ -27,6 +32,6 @@ def collect_and_rename_images(source_dir, target_dir):
     print(f'共复制并重新编号了 {file_number - 1} 张图片。')
 
 # 使用示例
-source_directory = '/home/huangxijie/MedMLLM_attack/CMIC'  # 设置源目录路径
-target_directory = '/home/huangxijie/MedMLLM_attack/CMIC1'  # 设置目标目录路径
+source_directory = '/home/huangxijie/MedMLLM_attack/imagenet-1k/data/text'  # 设置源目录路径
+target_directory = '/home/huangxijie/MedMLLM_attack/imagenet-1k/data/image'  # 设置目标目录路径
 collect_and_rename_images(source_directory, target_directory)
