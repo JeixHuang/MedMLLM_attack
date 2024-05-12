@@ -9,6 +9,7 @@ import argparse
 from typing import Any, List, Tuple
 import os
 import open_clip
+from tqdm import tqdm
 
 # 这里导入IMAGENET2012_CLASSES
 from classes import IMAGENET2012_CLASSES
@@ -23,7 +24,7 @@ def timing_decorator(func):
         return result
     return wrapper
 
-@timing_decorator
+# @timing_decorator
 def clip_score(model, image, tokenized_text) -> float:
     with torch.no_grad():
         image_features, text_features, logit_scale = model(image, tokenized_text)
@@ -31,12 +32,12 @@ def clip_score(model, image, tokenized_text) -> float:
     return score.item()
 
 def process_split(split: str, device: torch.device, model: Any, preprocess: Any, tokenizer: Any) -> List[Tuple]:
-    dataset = load_dataset("imagenet-1k", split=split)
+    dataset = load_dataset("../ImageNet1K-val", split=split, trust_remote_code=True)
     results = []
     all_labels = list(IMAGENET2012_CLASSES.values())
-
-    for index, example in enumerate(dataset):
-        label_id = label_to_id[example['label']]  # 从标签索引到类别ID的映射
+    
+    for index, example in tqdm(enumerate(dataset), desc=f"Processing {split} split"):
+        label_id = label_to_id[example['label']]
         label_original = IMAGENET2012_CLASSES[label_id]
         unmatch_label = random.choice([l for l in all_labels if l != label_original])
 
@@ -49,7 +50,6 @@ def process_split(split: str, device: torch.device, model: Any, preprocess: Any,
         unmatch_score = clip_score(model, image, tokenized_text_unmatch)
 
         results.append((index, label_original, origin_score, unmatch_label, unmatch_score))
-        print(f"Processed {split} split, index {index}")
 
     return results
 
