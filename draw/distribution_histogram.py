@@ -24,7 +24,7 @@ data_frames = [pd.read_csv(path) for path in data_paths]
 
 # 创建色彩渐变
 color_count = len(data_paths)
-colors = plt.cm.viridis(np.linspace(0, 1, color_count))
+colors = plt.cm.rainbow(np.linspace(0, 1, color_count))
 
 # 确保输出文件夹存在
 os.makedirs(output_path, exist_ok=True)
@@ -41,15 +41,15 @@ for variable in variable_names:
             kde = gaussian_kde(x_normalized)
             x_grid = np.linspace(0, 1, 1000)
             density = kde(x_grid)
-            plt.fill_between(x_grid, density, alpha=0.5, color=color)
+            plt.fill_between(x_grid, density, alpha=0.2, color=color)
             all_density.append(density)
     
-    plt.title(f'Normalized Distribution of {variable} across different CSV files')
-    plt.xlabel('Normalized Score')
-    plt.ylabel('Density')
+    plt.title(f'{variable}')
+    # plt.xlabel('Normalized Score')
+    plt.ylabel('Proportion(%)')
     plt.legend([os.path.basename(path).split('.')[0] for path in data_paths], loc='upper left')
     plt.grid(True)
     plt.xlim(0, 1)
     plt.ylim(0, max([max(density) for density in all_density]) * 1.2)  # 动态调整Y轴范围
-    plt.savefig(os.path.join(output_path, f'{variable}_normalized.png'))  # 保存到指定文件夹
+    plt.savefig(os.path.join(output_path, f'{variable}.png'))  # 保存到指定文件夹
     plt.close()

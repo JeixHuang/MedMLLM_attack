@@ -3,7 +3,7 @@ import glob
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-
+import matplotlib.patches as patches 
 def perpendicular_distance(x, y):
     return abs(y - x) / np.sqrt(2)
 
@@ -75,12 +75,18 @@ def add_circles(ax, folder_path):
         origin_mean = np.mean(data['origin_scores'])
         unmatch_mean = np.mean(data['unmatch_scores'])
         center = (origin_mean, unmatch_mean)
-        variance = np.var(perpendicular_distance(data['origin_scores'], data['unmatch_scores']))
+        # 计算 x 坐标到 x 坐标均值的平均距离
+        x_distances = np.abs(data['origin_scores'] - origin_mean)
+        x_radius = np.mean(x_distances)
 
-        # Draw circle with center at the means and radius as sqrt(variance)
-        circle = plt.Circle(center, np.sqrt(variance), color=data['color'],alpha=0.2, fill=True, linewidth=2)
-        ax.add_patch(circle)
-        ax.text(*center, f'{file_name}', fontsize=12, color='black', ha='center')
+        # 计算 y 坐标到 y 坐标均值的平均距离
+        y_distances = np.abs(data['unmatch_scores'] - unmatch_mean)
+        y_radius = np.mean(y_distances)
+
+        # 绘制椭圆
+        ellipse = patches.Ellipse(center, 2 * x_radius, 2 * y_radius, color=data['color'], alpha=0.2, fill=True)
+        ax.add_patch(ellipse)
+        # ax.text(*center, f'{file_name}', fontsize=12, color='black', ha='center')
 
     ax.set_xlim(0, 50)
     ax.set_ylim(0, 50)

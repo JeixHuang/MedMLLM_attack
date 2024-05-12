@@ -10,7 +10,7 @@ from na2na_linear import add_circles as circle4
 
 def main():
     # 设置图形大小和子图布局，分为上下两排，每排四个图
-    fig, axs = plt.subplots(2, 4, figsize=(20, 20), gridspec_kw={'wspace': 0.05, 'hspace': 0.05})
+    fig, axs = plt.subplots(4, 4, figsize=(20, 20), gridspec_kw={'wspace': 0.05, 'hspace': 0.05})
     axs = axs.flatten()  # 将 axs 数组扁平化
 
     # 定义每个绘图函数对应的文件夹路径

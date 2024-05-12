@@ -1,99 +1,55 @@
 import os
-import glob
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.stats import gaussian_kde
 
-def perpendicular_distance(x, y):
-    return abs(y - x) / np.sqrt(2)
+# 指定要读取CSV文件的文件夹路径
+folder_path = '../metric/ret_com'  # 修改为您的文件夹路径
+output_path = 'plot_ret_distribution'
+data_paths = [os.path.join(folder_path, file) for file in os.listdir(folder_path) if file.endswith('.csv')]
 
-def create_scatter_plot(ax, folder_path):
-    # Get all CSV files in the folder
-    csv_files = glob.glob(os.path.join(folder_path, "*.csv"))
-    all_data = {}
-    color_count = len(csv_files)
-    colors = plt.cm.rainbow(np.linspace(0, 1, color_count))[::-1]
+# 定义变量名
+variable_names = [
+    'text_sim_score_malicious',
+    'text_sim_score_unmatch',
+    'image_text_sim_score_malicious_nature',
+    'image_text_sim_score_unmatch_nature',
+    'image_text_sim_score_malicious_bio',
+    'image_text_sim_score_unmatch_nature_bio'
+]
 
-    for i, csv_file in enumerate(csv_files):
-        df = pd.read_csv(csv_file)
-        if 'origin_score' in df.columns and 'unmatch_score' in df.columns:
-            file_name = os.path.basename(csv_file).replace('.csv', '')
-            all_data[file_name] = {
-                'origin_scores': df['origin_score'].values,
-                'unmatch_scores': df['unmatch_score'].values,
-                'color': colors[i]
-            }
+# 读取CSV文件
+data_frames = [pd.read_csv(path) for path in data_paths]
 
-    if not all_data:
-        raise ValueError("No valid data found in any CSV files.")
+# 创建色彩渐变
+color_count = len(data_paths)
+colors = plt.cm.rainbow(np.linspace(0, 1, color_count))[::-1]
 
-    global_origin_scores = []
-    global_unmatch_scores = []
-    for file_name, data in all_data.items():
-        global_origin_scores.extend(data['origin_scores'])
-        global_unmatch_scores.extend(data['unmatch_scores'])
-        ax.scatter(data['origin_scores'], data['unmatch_scores'], color=data['color'], alpha=0.6)
+# 确保输出文件夹存在
+os.makedirs(output_path, exist_ok=True)
 
-    global_origin_scores = np.array(global_origin_scores)
-    global_unmatch_scores = np.array(global_unmatch_scores)
-    distances = perpendicular_distance(global_origin_scores, global_unmatch_scores)
-    average_distance = np.mean(distances)
-    x_values = np.linspace(min(global_origin_scores.min(), global_unmatch_scores.min()), max(global_origin_scores.max(), global_unmatch_scores.max()), 100)
-    ax.plot(x_values, x_values, 'r--')
-    offset = average_distance * np.sqrt(2)
-    ax.plot(x_values, x_values + offset, 'g--')
-    ax.fill_between(x_values, x_values, x_values + offset, color='grey', alpha=0.2)
-    mid_x = 10  # 在x=25的位置标记，位于两条线中间的位置
-    mid_y = 35 + offset / 2  # 中间点的y值
-    ax.text(mid_x, mid_y, f'Offset: {offset:.2f}', fontsize=12, color='black', ha='center', va='center')
-
-    ax.set_xlim(0, 50)
-    ax.set_ylim(0, 50)
-    # ax.set_xlabel('Origin Score')
-    # ax.set_ylabel('Unmatch Score')
-    # ax.set_title('Scatter Plot with Highlighted Bias Line')
-    ax.grid(True)
-
-
-
-def add_circles(ax, folder_path):
-    csv_files = glob.glob(os.path.join(folder_path, "*.csv"))
-    all_data = {}
-    color_count = len(csv_files)
-    colors = plt.cm.rainbow(np.linspace(0, 1, color_count))[::-1]
-
-    for i, csv_file in enumerate(csv_files):
-        df = pd.read_csv(csv_file)
-        if 'origin_score' in df.columns and 'unmatch_score' in df.columns:
-            file_name = os.path.basename(csv_file).replace('.csv', '')
-            all_data[file_name] = {
-                'origin_scores': df['origin_score'].values,
-                'unmatch_scores': df['unmatch_score'].values,
-                'color': colors[i]
-            }
-
-    if not all_data:
-        raise ValueError("No valid data found in any CSV files.")
-    for file_name, data in all_data.items():
-        origin_mean = np.mean(data['origin_scores'])
-        unmatch_mean = np.mean(data['unmatch_scores'])
-        center = (origin_mean, unmatch_mean)
-        variance = np.var(perpendicular_distance(data['origin_scores'], data['unmatch_scores']))
-
-        # Draw circle with center at the means and radius as sqrt(variance)
-        circle = plt.Circle(center, np.sqrt(variance), color=data['color'],alpha=0.2, fill=True, linewidth=2)
-        ax.add_patch(circle)
-        ax.text(*center, f'{file_name}', fontsize=12, color='black', ha='center')
-
-    ax.set_xlim(0, 50)
-    ax.set_ylim(0, 50)
-    # ax.set_xlabel('Origin Score')
-    # ax.set_ylabel('Unmatch Score')
-    # ax.set_title('Scatter Plot with Highlighted Circles')
+# 为每个变量绘制图形
+for variable in variable_names:
+    plt.figure(figsize=(10, 8))
+    all_density = []
+    for df, color, path in zip(data_frames, colors, data_paths):
+        if variable in df.columns:
+            x = df[variable].dropna()
+            # 归一化处理
+            x_normalized = (x - x.min()) / (x.max() - x.min())
+            kde = gaussian_kde(x_normalized)
+            x_grid = np.linspace(0, 1, 1000)
+            density = kde(x_grid)
+            plt.fill_between(x_grid, density, alpha=0.7, color=color)  # 增大透明度
+            all_density.append(density)
     
-    
-    
-# 使用示例
-fig, ax = plt.subplots(figsize=(10, 10))
-create_scatter_plot(ax, '../metric/img2text_results')
-plt.show()
+    plt.title(f'{variable}')
+    # plt.xlabel('Normalized Score')
+    plt.ylabel('Proportion(%)')
+    plt.legend([os.path.basename(path).split('.')[0] for path in data_paths], loc='upper left')
+    plt.grid(True)
+    plt.xlim(0, 1)
+    plt.ylim(0, max([max(density) for density in all_density]) * 1.2)  # 动态调整Y轴范围
+    plt.savefig(os.path.join(output_path, f'{variable}.png'))  # 保存到指定文件夹
+    plt.close()
