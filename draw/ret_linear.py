@@ -68,7 +68,7 @@ offset = average_distance * np.sqrt(2)
 plt.plot(x_values, x_values + offset, 'g--', label=f'Bias Line (Offset by {offset:.2f})')
 
 # Annotate the offset value within the plot, avoiding overlaps
-plt.text(x_values[-1], x_values[-1] + offset, f'Offset: {offset:.2f}', fontsize=12, color='green', ha='left', va='bottom')
+plt.text(x_values[-1], x_values[-1] + offset, f'Offset: {offset:.2f}', fontsize=20, color='green', ha='left', va='bottom')
 
 # Shade the region between the y=x line and the bias line
 plt.fill_between(x_values, x_values, x_values + offset, color='grey', alpha=0.2, label='Impact Region')

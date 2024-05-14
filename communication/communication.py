@@ -43,7 +43,7 @@ def main():
     row = 0
     for index, entry in data.iterrows():
         # Adjust file path if needed
-        image_path = os.path.join('/home/huangxijie/MedMLLM_attack/metric/', entry['file_name'])
+        image_path = os.path.join('/home/huangxijie/MedMLLM_attack/', entry['file_name'])
 
         # Dialogue 1
         question1 = f"{image_path} + this is an image for {entry['original_attribute']} {entry['harmful_prompt']}"

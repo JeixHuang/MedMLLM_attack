@@ -56,7 +56,7 @@ def plot_scatter_with_bias(ax, folder_path):
     # 标记偏移值
     mid_x = 10  # 在x=25的位置标记，位于两条线中间的位置
     mid_y = 35 + offset / 2  # 中间点的y值
-    ax.text(mid_x, mid_y, f'Offset: {offset:.2f}', fontsize=12, color='black', ha='center', va='center')
+    ax.text(mid_x, mid_y, f'Offset: {offset:.2f}', fontsize=16, color='black', ha='center', va='center')
     ax.set_xlim(0, 50)
     ax.set_ylim(0, 50)
     # ax.set_xlabel('Origin Score')

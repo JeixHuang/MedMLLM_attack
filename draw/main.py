@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from med2med_linear import create_scatter_plot as plot_med2med
+from med2med_linear import plot_scatter_with_bias as plot_med2med
 from med2na_linear import plot_data_by_label as plot_med2na
 from na2med_linear import plot_scatter_with_bias as plot_na2med
 from na2na_linear import plot_labeled_scatter as plot_na2na
@@ -10,7 +10,7 @@ from na2na_linear import add_circles as circle4
 
 def main():
     # 设置图形大小和子图布局，分为上下两排，每排四个图
-    fig, axs = plt.subplots(4, 4, figsize=(20, 20), gridspec_kw={'wspace': 0.05, 'hspace': 0.05})
+    fig, axs = plt.subplots(2, 4, figsize=(20, 10), gridspec_kw={'wspace': 0.1, 'hspace': 0.1})
     axs = axs.flatten()  # 将 axs 数组扁平化
 
     # 定义每个绘图函数对应的文件夹路径
