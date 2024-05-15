@@ -54,6 +54,7 @@ def plot_labeled_scatter(ax, folder_path):
     ax.grid(True)
 
 def add_circles(ax, folder_path):
+    print(folder_path)
     csv_files = glob.glob(os.path.join(folder_path, "*.csv"))
     all_data = {}
     color_count = len(csv_files)
@@ -75,14 +76,15 @@ def add_circles(ax, folder_path):
         origin_mean = np.mean(data['origin_scores'])
         unmatch_mean = np.mean(data['unmatch_scores'])
         center = (origin_mean, unmatch_mean)
+        print(center)
         # 计算 x 坐标到 x 坐标均值的平均距离
         x_distances = np.abs(data['origin_scores'] - origin_mean)
         x_radius = np.mean(x_distances)
-
+        # print(x_radius)
         # 计算 y 坐标到 y 坐标均值的平均距离
         y_distances = np.abs(data['unmatch_scores'] - unmatch_mean)
         y_radius = np.mean(y_distances)
-
+        # print(y_radius)
         # 绘制椭圆
         ellipse = patches.Ellipse(center, 2 * x_radius, 2 * y_radius, color=data['color'], alpha=0.2, fill=True)
         ax.add_patch(ellipse)
@@ -93,6 +95,29 @@ def add_circles(ax, folder_path):
     # ax.set_xlabel('Origin Score')
     # ax.set_ylabel('Unmatch Score')
     # ax.set_title('Scatter Plot with Highlighted Circles')
+def print_scores(folder_path):
+    # Reuse the CSV reading part from plot_scatter_with_bias
+    csv_files = glob.glob(os.path.join(folder_path, "*.csv"))
+    all_origin_scores = []
+    all_unmatch_scores = []
+    
+    for csv_file in csv_files:
+        df = pd.read_csv(csv_file)
+        if 'origin_score' in df.columns and 'unmatch_score' in df.columns:
+            all_origin_scores.extend(df['origin_score'].tolist())
+            all_unmatch_scores.extend(df['unmatch_score'].tolist())
+
+    if not all_origin_scores or not all_unmatch_scores:
+        print("No valid scores found in CSV files.")
+        return
+
+    # Calculate the averages
+    avg_origin_score = np.mean(all_origin_scores)
+    avg_unmatch_score = np.mean(all_unmatch_scores)
+
+    # Print the averages
+    print(f"Average Original Score: {avg_origin_score:.2f}")
+    print(f"Average Unmatch Score: {avg_unmatch_score:.2f}")
     
     
 # 使用示例

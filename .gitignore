@@ -8,3 +8,5 @@
 *.tar.gz
 /imagenet-1k
 /ImageNet1K-val
+/ret
+/ret_llavamed
