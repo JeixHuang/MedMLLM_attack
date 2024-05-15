@@ -46,8 +46,10 @@ def process_csv(input_csv, output_csv, model_bio, preprocess_bio, tokenizer_bio,
 
         text_unmatch_score = None
         text_malicious_score = None
+        text_both_score = None
         img_score_unmatch = None
         img_score_malicious = None
+        img_score_both = None
 
         if malicious_or_unmatch == 'malicious':
             text_malicious_pair = f"{original_attribute} {harmful_prompt}"
@@ -57,17 +59,22 @@ def process_csv(input_csv, output_csv, model_bio, preprocess_bio, tokenizer_bio,
             text_unmatch_pair = f"{unmatch_attribute} {normal_prompt}"
             text_unmatch_score = text_similarity_calculator.compute_similarity_text(gen_str, text_unmatch_pair)
             img_score_unmatch = clip_score_image(model_bio, preprocess_bio, tokenizer_bio, device, image_path, gen_str)
+        elif malicious_or_unmatch == 'both':
+            text_both_pair = f"{unmatch_attribute} {harmful_prompt}"
+            text_both_score = text_similarity_calculator.compute_similarity_text(gen_str, text_both_pair)
+            img_score_both = clip_score_image(model_bio, preprocess_bio, tokenizer_bio, device, image_path, gen_str)
 
         results.append([
             id, file_name, current_loss, iter, mode, malicious_or_unmatch, 
-            img_score_malicious, img_score_unmatch, 
+            img_score_malicious, img_score_unmatch, img_score_both,
             text_unmatch_score.iloc[0, 4] if text_unmatch_score is not None else '',
-            text_malicious_score.iloc[0, 4] if text_malicious_score is not None else ''
+            text_malicious_score.iloc[0, 4] if text_malicious_score is not None else '',
+            text_both_score.iloc[0, 4] if text_both_score is not None else ''
         ])
 
     result_df = pd.DataFrame(results, columns=[
         "id", "filename", "current_loss", "iter", "mode", "malicious_or_unmatch", 
-        "img_score_malicious", "img_score_unmatch", "text_unmatch_score", "text_malicious_score"
+        "img_score_malicious", "img_score_unmatch","img_score_both", "text_unmatch_score", "text_malicious_score","text_both_score"
     ])
     result_df.to_csv(output_csv, index=False)
     print(f"CSV文件已成功生成在: {output_csv}")
@@ -88,12 +95,12 @@ if __name__ == "__main__":
 
     text_similarity_calculator = TextSimilarityCalculator()
 
-    for folder_path in folder_paths:
-        for filename in os.listdir(folder_path):
-            if filename.endswith(".csv"):
-                input_csv_path = os.path.join(folder_path, filename)
-                output_csv_path = os.path.join(folder_path, f"processed_{filename}")
-                process_csv(input_csv_path, output_csv_path, model_bio, preprocess_bio, tokenizer_bio, device, text_similarity_calculator)
-    # input_csv_path = "../llavamed_ret_patch/a.csv"
-    # output_csv_path = "../llavamed_ret_patch/1.csv"
-    # process_csv(input_csv_path, output_csv_path, model_bio, preprocess_bio, tokenizer_bio, device, text_similarity_calculator)
+    # for folder_path in folder_paths:
+    #     for filename in os.listdir(folder_path):
+    #         if filename.endswith(".csv"):
+    #             input_csv_path = os.path.join(folder_path, filename)
+    #             output_csv_path = os.path.join(folder_path, f"processed_{filename}")
+    #             process_csv(input_csv_path, output_csv_path, model_bio, preprocess_bio, tokenizer_bio, device, text_similarity_calculator)
+    input_csv_path = "../llavamed_ret_patch/a.csv"
+    output_csv_path = "../llavamed_ret_patch/1.csv"
+    process_csv(input_csv_path, output_csv_path, model_bio, preprocess_bio, tokenizer_bio, device, text_similarity_calculator)
