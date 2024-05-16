@@ -9,10 +9,16 @@ from tqdm import tqdm
 # 确保正确导入你的TextSimilarityCalculator类
 from text2text_similarity import TextSimilarityCalculator  
 
-folder_paths = [
-    # '../ret_mcm',  # 适当调整路径
-    '../ret_pgd'
-    # '../ret_pgd'
+input_folder_paths = [
+    '../ret_mcm/ret_original',
+    '../ret_pgd/ret_original',
+    '../ret_gcg/ret_original'
+]
+
+output_folder_paths = [
+    '../ret_mcm/processed_ret',
+    '../ret_pgd/processed_ret',
+    '../ret_gcg/processed_ret'
 ]
 
 def clip_score_image(model, preprocess, tokenizer, device, image_path, text):
@@ -79,9 +85,13 @@ if __name__ == "__main__":
 
     text_similarity_calculator = TextSimilarityCalculator()
 
-    for folder_path in folder_paths:
-        for filename in os.listdir(folder_path):
+    for output_folder_path in output_folder_paths:
+        if not os.path.exists(output_folder_path):
+            os.makedirs(output_folder_path)
+
+    for input_folder_path, output_folder_path in zip(input_folder_paths, output_folder_paths):
+        for filename in os.listdir(input_folder_path):
             if filename.endswith(".csv"):
-                input_csv_path = os.path.join(folder_path, filename)
-                output_csv_path = os.path.join(folder_path, f"processed_{filename}")
+                input_csv_path = os.path.join(input_folder_path, filename)
+                output_csv_path = os.path.join(output_folder_path, filename)
                 process_csv(input_csv_path, output_csv_path, model_bio, preprocess_bio, tokenizer_bio, device, text_similarity_calculator)

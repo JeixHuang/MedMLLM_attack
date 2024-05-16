@@ -95,12 +95,12 @@ if __name__ == "__main__":
 
     text_similarity_calculator = TextSimilarityCalculator()
 
-    # for folder_path in folder_paths:
-    #     for filename in os.listdir(folder_path):
-    #         if filename.endswith(".csv"):
-    #             input_csv_path = os.path.join(folder_path, filename)
-    #             output_csv_path = os.path.join(folder_path, f"processed_{filename}")
-    #             process_csv(input_csv_path, output_csv_path, model_bio, preprocess_bio, tokenizer_bio, device, text_similarity_calculator)
-    input_csv_path = "../llavamed_ret_patch/a.csv"
-    output_csv_path = "../llavamed_ret_patch/1.csv"
-    process_csv(input_csv_path, output_csv_path, model_bio, preprocess_bio, tokenizer_bio, device, text_similarity_calculator)
+    for folder_path in folder_paths:
+        for filename in os.listdir(folder_path):
+            if filename.endswith(".csv"):
+                input_csv_path = os.path.join(folder_path, filename)
+                output_csv_path = os.path.join(folder_path, f"processed_{filename}")
+                process_csv(input_csv_path, output_csv_path, model_bio, preprocess_bio, tokenizer_bio, device, text_similarity_calculator)
+    # input_csv_path = "../llavamed_ret_patch/a.csv"
+    # output_csv_path = "../llavamed_ret_patch/1.csv"
+    # process_csv(input_csv_path, output_csv_path, model_bio, preprocess_bio, tokenizer_bio, device, text_similarity_calculator)
