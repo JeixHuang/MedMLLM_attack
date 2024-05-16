@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from scipy.cluster.hierarchy import linkage, dendrogram
 
 # 定义文件夹路径
 base_dir = "/home/huangxijie/MedMLLM_attack/"
@@ -12,7 +13,7 @@ if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
 # 定义实验文件夹
-folders = ["ret_normal", "ret_gcg", "ret_pgd", "ret_mcm"]
+folders = [ "ret_gcg", "ret_pgd", "ret_mcm"]
 methods = ["gcg", "pgd", "mcm"]
 input_types = ["unmatch", "both", "malicious"]
 
@@ -98,24 +99,38 @@ def multi_dimension_analysis(df, output_dir):
     plt.close()
     print(f"Saved Multi Dimension Analysis at {output_file}")
 
-multi_dimension_analysis(scores_df, output_dir)
+# multi_dimension_analysis(scores_df, output_dir)
 
 # 生成热力图
-def plot_heatmap(df, model, method, score_type, output_dir):
-    pivot_table = pd.pivot_table(df, values=f"{score_type}_score", 
+def plot_heatmap(df, model, method, score_type, input_type, output_dir):
+    score_column = f"{score_type}_score_{input_type}"
+    if score_column not in df.columns:
+        print(f"Skipping heatmap for {model} with {method} on {score_column} (column not found)")
+        return
+    
+    # 生成透视表
+    pivot_table = pd.pivot_table(df, values=score_column, 
                                  index="original_attribute", columns="policy", aggfunc='mean')
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(pivot_table, annot=True, cmap="YlGnBu")
-    plt.title(f"Heatmap of {score_type.capitalize()} Scores for {model} using {method}")
+    
+    # 对行和列进行排序，使得最大值在右上角，最小值在左下角
+    sorted_rows = pivot_table.mean(axis=1).sort_values(ascending=False).index
+    sorted_cols = pivot_table.mean(axis=0).sort_values(ascending=False).index
+    
+    sorted_pivot_table = pivot_table.loc[sorted_rows, sorted_cols]
+    
+    plt.figure(figsize=(12, 12))
+    sns.heatmap(sorted_pivot_table, annot=True, cmap="YlGnBu")
+    plt.title(f"Heatmap of {score_type.capitalize()} Scores for {model} using {method} ({input_type} inputs)")
     plt.tight_layout()
-    output_file = os.path.join(output_dir, f"heatmap_{model}_{method}_{score_type}.png")
+    output_file = os.path.join(output_dir, f"heatmap_{model}_{method}_{score_type}_{input_type}.png")
     plt.savefig(output_file)
     plt.close()
-    print(f"Saved Heatmap of {score_type.capitalize()} Scores for {model} using {method} at {output_file}")
+    print(f"Saved Heatmap of {score_type.capitalize()} Scores for {model} using {method} ({input_type} inputs) at {output_file}")
 
 # 生成所有热力图
 for model in scores_df["model"].unique():
     for method in methods:
         for score_type in ["img", "text"]:
-            plot_heatmap(scores_df[(scores_df["model"] == model) & (scores_df["method"] == method)], 
-                         model, method, score_type, output_dir)
+            for input_type in input_types:
+                plot_heatmap(scores_df[(scores_df["model"] == model) & (scores_df["method"] == method)], 
+                             model, method, score_type, input_type, output_dir)
