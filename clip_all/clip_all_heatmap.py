@@ -51,7 +51,7 @@ scores_df = scores_df.dropna(axis=1, how='all')
 original_attributes = pd.read_csv(os.path.join(base_dir, "CMIC/3MAD-Tiny-1K.csv"))
 
 # 将 attribute 列拆分成一级类和二级类
-original_attributes[['primary_attribute', 'secondary_attribute']] = original_attributes['original_attribute'].str.split(' and ', expand=True)
+original_attributes[['primary_attribute', 'secondary_attribute']] = original_attributes['attribute'].str.split(' and ', expand=True)
 
 # 合并原始属性和策略数据
 scores_df = scores_df.merge(original_attributes, on="id")

@@ -69,7 +69,7 @@ if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
 # 定义实验文件夹和相关参数
-folders = ["ret_gcg", "ret_pgd", "ret_mcm"]
+folders = ["transfer_experiment/ret_gcg", "transfer_experiment/ret_pgd", "transfer_experiment/ret_mcm"]
 methods = ["gcg", "pgd", "mcm"]
 input_types = ["unmatch", "both", "malicious"]
 
@@ -106,8 +106,8 @@ original_attributes[['primary_attribute', 'secondary_attribute']] = original_att
 scores_df = scores_df.merge(original_attributes, on="id")
 
 # 创建六维矩阵
-score_sums = np.zeros((18, 18, 4, 3, 3, 2))  # 用于累加分数
-score_counts = np.zeros((18, 18, 4, 3, 3, 2))  # 用于计数
+score_sums = np.zeros((18, 18, 4, 3, 3, 3))  # 用于累加分数
+score_counts = np.zeros((18, 18, 4, 3, 3, 3))  # 用于计数
 
 # 映射策略、属性、模型、攻击方法和输入类型到索引
 policy_mapping = {policy: idx for idx, policy in enumerate(scores_df['policy'].unique())}
@@ -115,7 +115,7 @@ attribute_mapping = {attribute: idx for idx, attribute in enumerate(scores_df['o
 model_mapping = {model: idx for idx, model in enumerate(scores_df['model'].unique())}
 method_mapping = {method: idx for idx, method in enumerate(methods)}
 input_mapping = {input_type: idx for idx, input_type in enumerate(input_types)}
-score_mapping = {'text_score': 0, 'img_score': 1}
+score_mapping = {'text_score': 0, 'img_score': 1,'asr_score':2}
 
 # 反向映射
 policy_reverse_mapping = {idx: policy for policy, idx in policy_mapping.items()}
@@ -123,7 +123,7 @@ attribute_reverse_mapping = {idx: attribute for attribute, idx in attribute_mapp
 model_reverse_mapping = {idx: model for model, idx in model_mapping.items()}
 method_reverse_mapping = {idx: method for method, idx in method_mapping.items()}
 input_reverse_mapping = {idx: input_type for input_type, idx in input_mapping.items()}
-score_reverse_mapping = {0: 'text_score', 1: 'img_score'}
+score_reverse_mapping = {0: 'text_score', 1: 'img_score',2:'asr_score'}
 
 # 填充六维矩阵
 for _, row in scores_df.iterrows():
@@ -137,6 +137,7 @@ for _, row in scores_df.iterrows():
         
         text_score_column = f"text_score_{input_type}"
         img_score_column = f"img_score_{input_type}"
+        asr_score_column = f"asr_score_{input_type}"
         
         if text_score_column in row and not pd.isna(row[text_score_column]):
             score_sums[policy_idx, attribute_idx, model_idx, method_idx, input_idx, score_mapping['text_score']] += row[text_score_column]
@@ -145,6 +146,10 @@ for _, row in scores_df.iterrows():
         if img_score_column in row and not pd.isna(row[img_score_column]):
             score_sums[policy_idx, attribute_idx, model_idx, method_idx, input_idx, score_mapping['img_score']] += row[img_score_column]
             score_counts[policy_idx, attribute_idx, model_idx, method_idx, input_idx, score_mapping['img_score']] += 1
+            
+        if asr_score_column in row and not pd.isna(row[asr_score_column]):
+            score_sums[policy_idx, attribute_idx, model_idx, method_idx, input_idx, score_mapping['asr_score']] += row[asr_score_column]
+            score_counts[policy_idx, attribute_idx, model_idx, method_idx, input_idx, score_mapping['asr_score']] += 1
 
 def print_mappings():
     print("Policy Mapping:")
@@ -176,16 +181,18 @@ np.save(output_file, average_scores)
 print(f"Saved six-dimensional average matrix at {output_file}")
 
 # 显示示例坐标和对应分值
-# def print_example_scores():
-#     for policy_idx in range(18):
-#         for attribute_idx in range(18):
-#             for model_idx in range(4):
-#                 for method_idx in range(3):
-#                     for input_idx in range(3):
-#                         text_score = average_scores[policy_idx, attribute_idx, model_idx, method_idx, input_idx, score_mapping['text_score']]
-#                         img_score = average_scores[policy_idx, attribute_idx, model_idx, method_idx, input_idx, score_mapping['img_score']]
-#                         print(f"Policy: {policy_reverse_mapping[policy_idx]}, Attribute: {attribute_reverse_mapping[attribute_idx]}, Model: {model_reverse_mapping[model_idx]}, Method: {method_reverse_mapping[method_idx]}, Input: {input_reverse_mapping[input_idx]}")
-#                         print(f"Text Score: {text_score}, Image Score: {img_score}")
+def print_example_scores():
+    for policy_idx in range(18):
+        for attribute_idx in range(18):
+            for model_idx in range(4):
+                for method_idx in range(3):
+                    for input_idx in range(3):
+                        text_score = average_scores[policy_idx, attribute_idx, model_idx, method_idx, input_idx, score_mapping['text_score']]
+                        img_score = average_scores[policy_idx, attribute_idx, model_idx, method_idx, input_idx, score_mapping['img_score']]
+                        asr_score = average_scores[policy_idx, attribute_idx, model_idx, method_idx, input_idx, score_mapping['asr_score']]
+                        print(f"Policy: {policy_reverse_mapping[policy_idx]}, Attribute: {attribute_reverse_mapping[attribute_idx]}, Model: {model_reverse_mapping[model_idx]}, Method: {method_reverse_mapping[method_idx]}, Input: {input_reverse_mapping[input_idx]}")
+                        print(f"Text Score: {text_score}, Image Score: {img_score}, ASR Score: {asr_score}")
 
-# print_example_scores()
+print_example_scores()
 print_mappings()
+
