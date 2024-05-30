@@ -9,16 +9,24 @@ from tqdm import tqdm
 # 确保正确导入你的TextSimilarityCalculator类
 from text2text_similarity import TextSimilarityCalculator  
 
+# input_folder_paths = [
+#     '../ret_mcm/ret_original',
+#     '../ret_pgd/ret_original',
+#     '../ret_gcg/ret_original'
+# ]
+
+# output_folder_paths = [
+#     '../ret_mcm/processed_ret',
+#     '../ret_pgd/processed_ret',
+#     '../ret_gcg/processed_ret'
+# ]
+
 input_folder_paths = [
-    '../ret_mcm/ret_original',
-    '../ret_pgd/ret_original',
-    '../ret_gcg/ret_original'
+    '../ret_mi/ret_original'
 ]
 
 output_folder_paths = [
-    '../ret_mcm/processed_ret',
-    '../ret_pgd/processed_ret',
-    '../ret_gcg/processed_ret'
+    '../ret_mi/processed_ret'
 ]
 
 def clip_score_image(model, preprocess, tokenizer, device, image_path, text):

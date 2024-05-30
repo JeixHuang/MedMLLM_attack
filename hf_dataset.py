@@ -2,7 +2,7 @@ import pandas as pd
 from datasets import Dataset,Image
 import time
 import os
-os.environ['HF_API_TOKEN'] = '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'
+os.environ['HF_API_TOKEN'] = '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'
 
 df = pd.read_csv("CMIC/3MAD-66K.csv")
 

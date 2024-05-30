@@ -37,21 +37,21 @@ def plot_data_by_label(ax, folder_path):
         ax.scatter(label_data['origin_score'], label_data['unmatch_score'], color=color, alpha=0.6, label=label)
 
     x_values = np.linspace(0, 50, 100)
-    ax.plot(x_values, x_values, 'r--', label='y=x Line')
-    offset = average_distance * np.sqrt(2)
-    ax.plot(x_values, x_values + offset, 'g--', label=f'Bias Line (Offset by {offset:.2f})')
-    # ax.text(x_values[-1], x_values[-1] + offset, f'Offset: {offset:.2f}', fontsize=12, color='black', ha='left', va='bottom')
-    ax.fill_between(x_values, x_values, x_values + offset, color='grey', alpha=0.2, label='Impact Region')
-    mid_x = 10  # 在x=25的位置标记，位于两条线中间的位置
-    mid_y = 35 + offset / 2  # 中间点的y值
-    ax.text(mid_x, mid_y, f'Offset: {offset:.2f}', fontsize=16, color='black', ha='center', va='center')
+    # ax.plot(x_values, x_values, 'r--', label='y=x Line')
+    # offset = average_distance * np.sqrt(2)
+    # ax.plot(x_values, x_values + offset, 'g--', label=f'Bias Line (Offset by {offset:.2f})')
+    # # ax.text(x_values[-1], x_values[-1] + offset, f'Offset: {offset:.2f}', fontsize=12, color='black', ha='left', va='bottom')
+    # ax.fill_between(x_values, x_values, x_values + offset, color='grey', alpha=0.2, label='Impact Region')
+    # mid_x = 10  # 在x=25的位置标记，位于两条线中间的位置
+    # mid_y = 35 + offset / 2  # 中间点的y值
+    # ax.text(mid_x, mid_y, f'Offset: {offset:.2f}', fontsize=16, color='black', ha='center', va='center')
     ax.set_xlim(0, 50)
     ax.set_ylim(0, 50)
-    # ax.set_xlabel('Origin Score')
-    # ax.set_ylabel('Unmatch Score')
-    # ax.set_title('Scatter Plot by Label Original')
+    # ax.set_xlabel('Matched Image Score', fontsize=30)
+    # ax.set_ylabel('Mismatched Image Score', fontsize=30)
     ax.grid(True)
-
+    # ax.legend(fontsize=12)
+    # ax.tick_params(axis='both', which='major', labelsize=12)
 
 def add_circles(ax, folder_path):
     print(folder_path)

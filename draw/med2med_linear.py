@@ -46,24 +46,25 @@ def plot_scatter_with_bias(ax, folder_path):
     offset = average_distance * np.sqrt(2)
     
     y_line_offset = y_line + offset  # Offset line
-    ax.plot(x_all, y_line, 'r--', label='y=x Line')
-    ax.plot(x_all, y_line_offset, 'g--', label=f'Bias Line (Offset by {offset:.2f})')
+    # ax.plot(x_all, y_line, 'r--', label='y=x Line')
+    # ax.plot(x_all, y_line_offset, 'g--', label=f'Bias Line (Offset by {offset:.2f})')
     
-    # ax.plot(x_values, x_values, 'r--', label='y=x Line')
+    # # ax.plot(x_values, x_values, 'r--', label='y=x Line')
     
-    # ax.plot(x_values, x_values + offset, 'g--', label=f'Bias Line (Offset by {offset:.2f})')
-    ax.text(x_values[-1], x_values[-1] + offset, '', fontsize=12, color='green', ha='left', va='bottom')
-    ax.fill_between(x_all, x_all, x_all + offset, color='grey', alpha=0.2, label='Impact Region')
-    # 标记偏移值
-    mid_x = 10  # 在x=25的位置标记，位于两条线中间的位置
-    mid_y = 35 + offset / 2  # 中间点的y值
-    ax.text(mid_x, mid_y, f'Offset: {offset:.2f}', fontsize=16, color='black', ha='center', va='center')
+    # # ax.plot(x_values, x_values + offset, 'g--', label=f'Bias Line (Offset by {offset:.2f})')
+    # ax.text(x_values[-1], x_values[-1] + offset, '', fontsize=12, color='green', ha='left', va='bottom')
+    # ax.fill_between(x_all, x_all, x_all + offset, color='grey', alpha=0.2, label='Impact Region')
+    # # 标记偏移值
+    # mid_x = 10  # 在x=25的位置标记，位于两条线中间的位置
+    # mid_y = 35 + offset / 2  # 中间点的y值
+    # ax.text(mid_x, mid_y, f'Offset: {offset:.2f}', fontsize=16, color='black', ha='center', va='center')
     ax.set_xlim(0, 50)
     ax.set_ylim(0, 50)
-    # ax.set_xlabel('Origin Score')
-    # ax.set_ylabel('Unmatch Score')
-    # ax.set_title('Scatter Plot with Highlighted Bias Line')
+    # ax.set_xlabel('Matched Image Score', fontsize=30)
+    # ax.set_ylabel('Mismatched Image Score', fontsize=30)
     ax.grid(True)
+    # ax.legend(fontsize=12)
+    # ax.tick_params(axis='both', which='major', labelsize=12)
 
 
 def add_circles(ax, folder_path):

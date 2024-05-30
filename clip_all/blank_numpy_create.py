@@ -69,7 +69,7 @@ if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
 # 定义实验文件夹和相关参数
-folders = ["ret_blank"]
+folders = ["ret_blank_asr"]
 methods = ["blank"]
 input_types = ["unmatch", "both", "malicious","normal"]
 
@@ -106,8 +106,8 @@ original_attributes[['primary_attribute', 'secondary_attribute']] = original_att
 scores_df = scores_df.merge(original_attributes, on="id")
 
 # 创建六维矩阵
-score_sums = np.zeros((18, 18, 4, 3, 3, 3))  # 用于累加分数
-score_counts = np.zeros((18, 18, 4, 3, 3, 3))  # 用于计数
+score_sums = np.zeros((18, 18, 4, 1, 4, 3))  # 用于累加分数
+score_counts = np.zeros((18, 18, 4, 1, 4, 3))  # 用于计数
 
 # 映射策略、属性、模型、攻击方法和输入类型到索引
 policy_mapping = {policy: idx for idx, policy in enumerate(scores_df['policy'].unique())}
@@ -171,7 +171,10 @@ def print_mappings():
     print("\nInput Mapping:")
     for idx in range(len(input_reverse_mapping)):
         print(f"Index {idx}: {input_reverse_mapping[idx]}")
-        
+
+    print("\nScore Mapping:")
+    for idx in range(len(score_reverse_mapping)):
+        print(f"Index {idx}: {score_reverse_mapping[idx]}")
 # 计算平均值
 average_scores = np.divide(score_sums, score_counts, where=score_counts != 0)
 
@@ -185,8 +188,8 @@ def print_example_scores():
     for policy_idx in range(18):
         for attribute_idx in range(18):
             for model_idx in range(4):
-                for method_idx in range(3):
-                    for input_idx in range(3):
+                for method_idx in range(1):
+                    for input_idx in range(4):
                         text_score = average_scores[policy_idx, attribute_idx, model_idx, method_idx, input_idx, score_mapping['text_score']]
                         img_score = average_scores[policy_idx, attribute_idx, model_idx, method_idx, input_idx, score_mapping['img_score']]
                         asr_score = average_scores[policy_idx, attribute_idx, model_idx, method_idx, input_idx, score_mapping['asr_score']]
